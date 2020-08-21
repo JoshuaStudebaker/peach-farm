@@ -1,5 +1,6 @@
 // Starting Variables
 let peachesPicked = 0;
+let bushelsPicked = 0;
 let peachesSold = 0;
 let pricePerPound_1s = 3.5;
 let pricePerPound_2s = 1;
@@ -16,6 +17,8 @@ let daysLeft_Summer = 100;
 let winter = "Winter";
 let spring = "Spring";
 let summer = "Summer (aka the Harvest)";
+let farmMods = 1;
+let salesMods = 1;
 
 // items/upgrades
 let pruningItems = {
@@ -81,7 +84,7 @@ let standWorkers = {
   standManager: {
     name: "Stand Manager",
     pricePerDay: 0,
-    multiplier: 20,
+    multiplier: 5,
     experience: 0,
   },
   retailer: {
@@ -103,6 +106,7 @@ let bushelsDisplay = document.getElementById("bushel-count");
 let timeOfYearDisplay = document.getElementById("time-of-year");
 let daysLeftDisplay = document.getElementById("days-left");
 let cashDisplay = document.getElementById("cash");
+
 // Intervals
 function dayCountSummer() {
   if (daysLeft_Summer > 0) {
@@ -125,7 +129,24 @@ function drawSummer() {
 
 // Game
 
-function addSalesMods() {}
+function addSales() {
+  let helper = standWorkers.standManager.multiplier;
+  salesMods = salesMods + helper;
+  console.log(salesMods);
+}
+
+function peachSelling() {
+  if (bushelsPicked > 0) {
+    bushelsPicked -= salesMods;
+    peachesSold = salesMods;
+    cash += peachesSold * pricePerPound_1s;
+  }
+  updateScreen();
+}
+
+function cashInterval() {
+  let cash = setInterval(peachSelling, 2000);
+}
 
 function sales() {
   daysLeftSummer();
@@ -133,15 +154,23 @@ function sales() {
   // TODO cash inflow needs to equal the amount of bushels
 }
 
+function addWorker() {
+  let helper = farmWorkers.farmManager.multiplier;
+  farmMods = farmMods + helper;
+  console.log(farmMods);
+}
+cashInterval();
 function pick() {
   if (daysLeft_Summer < 100) {
-    peachesPicked++;
+    peachesPicked += farmMods;
+    bushelsPicked = Math.ceil(peachesPicked / 4);
   }
+
   updateScreen();
 }
 
 function updateScreen() {
-  bushelsDisplay.innerHTML = "Bushels Picked: " + peachesPicked.toString();
+  bushelsDisplay.innerHTML = "Bushels Picked: " + bushelsPicked.toString();
   daysLeftDisplay.innerHTML = "Days Left: " + daysLeft_Summer.toString();
   cashDisplay.innerHTML = "Cash: $" + cash.toString();
 }

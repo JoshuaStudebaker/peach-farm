@@ -15,19 +15,19 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="container-fluid">
+    <header class="container-fluid bg-primary">
       <h1>Peach Farm</h1>
     </header>
     <main class="container-fluid flex-grow-1">
-      <div class="row">
-        <h2 id="bushel-count">Bushels Picked:</h2>
-        <h2 id="days-left">Days Left:</h2>
-        <h2 id="cash">Cash:</h2>
+      <div class="row bg-warning">
+        <h2 id="bushel-count" class="col-4">Bushels Picked:</h2>
+        <h2 id="days-left" class="col-4">Days Left:</h2>
+        <h2 id="cash" class="col-4">Cash:</h2>
       </div>
       <div class="row">
-        <div class="col-4">Winter</div>
+        <!-- <div class="col-4">Winter</div> -->
 
-        <div class="col-4">Spring</div>
+        <!-- <div class="col-4">Spring</div> -->
 
         <div class="col-4">
           <img
@@ -35,7 +35,7 @@
             class="image-size rounded"
             src="high-tunnel-pic.jpg"
           />
-          Summer
+          <!-- Summer -->
           <button
             type="button"
             class="btn btn-primary"
@@ -43,8 +43,19 @@
           >
             Begin Harvest
           </button>
+        
+      <div class="row"></div>
+      <div class="row my-2">
+        <div class="col-4">
+          <button class="btn btn-primary" onclick="addWorker()">
+            Add Worker
+          </button>
+          <button class="btn btn-primary" onclick="addSales()">
+            Add Stand Manager
+          </button>
         </div>
-        <div>Fall</div>
+        <div class="col-4"></div>
+        <div class="col-4"></div>
       </div>
     </main>
     <footer class="container-fluid"></footer>
