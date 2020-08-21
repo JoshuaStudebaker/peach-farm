@@ -45,6 +45,12 @@ let thinningItems;
 let pickingItems;
 
 let farmWorkers = {
+  farmManager: {
+    name: "Farm Manager",
+    pricePerDay: 0,
+    multiplier: 25,
+    experience: 2,
+  },
   kid: {
     name: "Kid",
     pricePerDay: 20,
@@ -71,33 +77,71 @@ let farmWorkers = {
   },
 };
 
+let standWorkers = {
+  standManager: {
+    name: "Stand Manager",
+    pricePerDay: 0,
+    multiplier: 20,
+    experience: 0,
+  },
+  retailer: {
+    name: "Retail Seller",
+    pricePerDay: 75,
+    multiplier: 10,
+    experience: 0,
+  },
+  boxer: {
+    name: "Boxer",
+    pricePerDay: 80,
+    multiplier: 15,
+    experience: 0,
+  },
+};
+
 // Element IDs
 let bushelsDisplay = document.getElementById("bushel-count");
 let timeOfYearDisplay = document.getElementById("time-of-year");
 let daysLeftDisplay = document.getElementById("days-left");
+let cashDisplay = document.getElementById("cash");
 // Intervals
-function dayCount() {
-  // daysLeft_Winter--
-  // daysLeft_Spring--
-  daysLeft_Summer--;
+function dayCountSummer() {
+  if (daysLeft_Summer > 0) {
+    daysLeft_Summer--;
+  } else {
+    daysLeft_Summer = 0;
+  }
   updateScreen();
 }
 
 function season() {}
 
-let days = setInterval(dayCount, 2000);
+function daysLeftSummer() {
+  let days = setInterval(dayCountSummer, 1000);
+}
 
 function drawSummer() {
   let template;
 }
 
 // Game
+
+function addSalesMods() {}
+
+function sales() {
+  daysLeftSummer();
+  // addMods()
+  // TODO cash inflow needs to equal the amount of bushels
+}
+
 function pick() {
-  peachesPicked++;
+  if (daysLeft_Summer < 100) {
+    peachesPicked++;
+  }
   updateScreen();
 }
 
 function updateScreen() {
   bushelsDisplay.innerHTML = "Bushels Picked: " + peachesPicked.toString();
   daysLeftDisplay.innerHTML = "Days Left: " + daysLeft_Summer.toString();
+  cashDisplay.innerHTML = "Cash: $" + cash.toString();
 }

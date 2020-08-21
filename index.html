@@ -19,13 +19,33 @@
       <h1>Peach Farm</h1>
     </header>
     <main class="container-fluid flex-grow-1">
-      <h2 id="bushel-count">Bushels Picked:</h2>
-      <h2 id="days-left">Days Left:</h2>
-      <img onclick="pick()" class="image-size" src="high-tunnel-pic.jpg" />
-      <div>Winter</div>
-      <div>Spring</div>
-      <div>Summer</div>
-      <div>Fall</div>
+      <div class="row">
+        <h2 id="bushel-count">Bushels Picked:</h2>
+        <h2 id="days-left">Days Left:</h2>
+        <h2 id="cash">Cash:</h2>
+      </div>
+      <div class="row">
+        <div class="col-4">Winter</div>
+
+        <div class="col-4">Spring</div>
+
+        <div class="col-4">
+          <img
+            onclick="pick()"
+            class="image-size rounded"
+            src="high-tunnel-pic.jpg"
+          />
+          Summer
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="daysLeftSummer()"
+          >
+            Begin Harvest
+          </button>
+        </div>
+        <div>Fall</div>
+      </div>
     </main>
     <footer class="container-fluid"></footer>
 
