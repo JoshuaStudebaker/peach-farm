@@ -10,11 +10,11 @@ let dog = "";
 let farmerName = "";
 let orchardName = "";
 let cash = 10000;
-let daysLeft_Winter =  60;
+let daysLeft_Winter = 60;
 let daysLeft_Spring = 90;
 let daysLeft_Summer = 100;
 let winter = "Winter";
-let spring = "Spring"
+let spring = "Spring";
 let summer = "Summer (aka the Harvest)";
 
 // items/upgrades
@@ -72,32 +72,32 @@ let farmWorkers = {
 };
 
 // Element IDs
-let bushelsDisplay = document.getElementById("bushelCount");
-let timeOfYear = document.getElementById('time-of-year')
+let bushelsDisplay = document.getElementById("bushel-count");
+let timeOfYearDisplay = document.getElementById("time-of-year");
+let daysLeftDisplay = document.getElementById("days-left");
 // Intervals
-function dayCount{
-  daysLeft_Winter--
-  daysLeft_Spring--
-  daysLeft_Summer--
+function dayCount() {
+  // daysLeft_Winter--
+  // daysLeft_Spring--
+  daysLeft_Summer--;
+  updateScreen();
 }
 
-function season() {
+function season() {}
 
-}
-function dayInterval() {
-  let days = setInterval(dayCount, 2000)
-}
+let days = setInterval(dayCount, 2000);
 
 function drawSummer() {
-  let template
+  let template;
 }
 
 // Game
 function pick() {
   peachesPicked++;
-  update();
+  updateScreen();
 }
 
-function update() {
+function updateScreen() {
   bushelsDisplay.innerHTML = "Bushels Picked: " + peachesPicked.toString();
+  daysLeftDisplay.innerHTML = "Days Left: " + daysLeft_Summer.toString();
 }
