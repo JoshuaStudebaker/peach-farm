@@ -23,19 +23,27 @@ let salesMods = 1;
 // Farm Items
 let farmSecurity = [
   {
-    name: "Stinkhund the Farmdog",
-    price: 400,
+    name: "Ruskle the Farmdog",
+    cost: 400,
     multiplier: 1,
     critterDamage: 100,
     requirement: 0,
-    adds: 0,
+    adds: 1,
+  },
+  {
+    name: "Deputy Barkaroo",
+    cost: 300,
+    multiplier: 1,
+    critterDamage: 80,
+    requirement: 1,
+    adds: 1,
   },
 ];
 
-let farmEquip = [
+let farmEquipment = [
   {
     name: "The Old Tractor that Could",
-    price: 4000,
+    cost: 4000,
     multiplier: 30,
     bugDamage: 0,
     critterDamage: 0,
@@ -44,7 +52,7 @@ let farmEquip = [
   },
   {
     name: "The Hopefully-Not-Too-Leaky Sprayer",
-    price: 1000,
+    cost: 1000,
     multiplier: 0,
     bugDamage: 50,
     critterDamage: 0,
@@ -53,7 +61,7 @@ let farmEquip = [
   },
   {
     name: "Picking Trailer",
-    price: 800,
+    cost: 800,
     multiplier: 30,
     bugDamage: 0,
     requirement: 10,
@@ -124,6 +132,8 @@ let daysLeftDisplay = document.getElementById("days-left");
 let cashDisplay = document.getElementById("cash");
 let farmWorkersDisplay = document.getElementById("farmWorkers");
 let standWorkersDisplay = document.getElementById("standWorkers");
+let farmEquipmentDisplay = document.getElementById("farmEquipment");
+let farmSecurityDisplay = document.getElementById("farmSecurity");
 
 // Intervals
 function dayCountSummer() {
@@ -228,8 +238,42 @@ function getStandWorkerTemplate(item) {
   `;
 }
 
+function drawFarmEquipment() {
+  let template = "";
+  farmEquipment.forEach((item) => {
+    template += getFarmEquipmentTemplate(item);
+  });
+
+  farmEquipmentDisplay.innerHTML = template;
+}
+
+function getFarmEquipmentTemplate(item) {
+  return /*html*/ `
+  <button onclick="addFarmEquipment('${item.name}')">
+  ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
+  </button>
+  `;
+}
+function drawFarmSecurity() {
+  let template = "";
+  farmSecurity.forEach((item) => {
+    template += getFarmSecurityTemplate(item);
+  });
+
+  farmSecurityDisplay.innerHTML = template;
+}
+
+function getFarmSecurityTemplate(item) {
+  return /*html*/ `
+  <button onclick="addFarmSecurity('${item.name}')">
+  ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
+  </button>
+  `;
+}
 drawFarmWorkers();
 drawStandWorkers();
+drawFarmEquipment();
+drawFarmSecurity();
 
 // //#region Possible Expansion
 
