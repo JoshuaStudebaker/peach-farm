@@ -5,7 +5,7 @@ let peachesSold = 0;
 let pricePerPound_1s = 3.5;
 let pricePerPound_2s = 1;
 let pricePerPound_Wholesale = 1.5;
-let bushelsPerTree = 0;
+let bushelsPerTree = 2;
 let trees = 1000;
 let dog = "";
 let farmerName = "";
@@ -20,54 +20,48 @@ let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
 let salesMods = 1;
 
-// items/upgrades
-let pruningItems = [
+// Farm Items
+let farmSecurity = [
   {
-    name: "Pruners",
-    price: 10,
-    quantity: 1,
-    multiplier: 5,
-    durability: 100,
-  },
-  {
-    name: "Mechanical Pruners",
-    price: 40,
-    quantity: 0,
-    multiplier: 8,
-    durability: 80,
-  },
-  {
-    name: "Extension Saw",
-    price: 120,
-    quantity: 0,
-    multiplier: 75,
-    durability: 150,
+    name: "Stinkhund the Farmdog",
+    price: 400,
+    multiplier: 1,
+    critterDamage: 100,
+    requirement: 0,
+    adds: 0,
   },
 ];
-let thinningItems = [
+
+let farmEquip = [
   {
-    name: "By Hand",
-    price: 10,
-    quantity: 1,
-    multiplier: 5,
-    durability: 100,
+    name: "The Old Tractor that Could",
+    price: 4000,
+    multiplier: 30,
+    bugDamage: 0,
+    critterDamage: 0,
+    requirement: 0,
+    adds: 10,
   },
   {
-    name: "The Whacker",
-    price: 40,
-    quantity: 0,
-    multiplier: 8,
-    durability: 80,
+    name: "The Hopefully-Not-Too-Leaky Sprayer",
+    price: 1000,
+    multiplier: 0,
+    bugDamage: 50,
+    critterDamage: 0,
+    requirement: 10,
+    adds: 3,
   },
   {
-    name: "Thinning Machine",
-    price: 120,
-    quantity: 0,
-    multiplier: 75,
-    durability: 150,
+    name: "Picking Trailer",
+    price: 800,
+    multiplier: 30,
+    bugDamage: 0,
+    requirement: 10,
+    adds: 4,
   },
 ];
-let pickingItems;
+
+let standInfrastructure = [{}];
 
 let farmWorkers = [
   {
@@ -123,11 +117,13 @@ let standWorkers = [
   },
 ];
 
-// Element IDs
+// Display IDs
 let bushelsDisplay = document.getElementById("bushel-count");
 let timeOfYearDisplay = document.getElementById("time-of-year");
 let daysLeftDisplay = document.getElementById("days-left");
 let cashDisplay = document.getElementById("cash");
+let farmWorkersDisplay = document.getElementById("farmWorkers");
+let standWorkersDisplay = document.getElementById("standWorkers");
 
 // Intervals
 function dayCountSummer() {
@@ -152,7 +148,7 @@ function drawSummer() {
 // Game
 
 function addSales() {
-  let helper = standWorkers.standManager.multiplier;
+  let helper = standWorkers[0].multiplier;
   salesMods = salesMods + helper;
   console.log(salesMods);
 }
@@ -210,14 +206,10 @@ function drawFarmWorkers() {
 function getFarmWorkerTemplate(item) {
   return /*html*/ `
   <button onclick="addFarmWorker('${item.name}')">
-    ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
+  ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
   </button>
   `;
 }
-
-let farmWorkersDisplay = document.getElementById("farmWorkers");
-
-drawFarmWorkers();
 
 function drawStandWorkers() {
   let template = "";
@@ -231,53 +223,102 @@ function drawStandWorkers() {
 function getStandWorkerTemplate(item) {
   return /*html*/ `
   <button onclick="addStandWorker('${item.name}')">
-    ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
+  ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
   </button>
   `;
 }
 
-let standWorkersDisplay = document.getElementById("standWorkers");
-
+drawFarmWorkers();
 drawStandWorkers();
 
-function drawPruningItems() {
-  let template = "";
-  pruningItems.forEach((item) => {
-    template += getPruningItemsTemplate(item);
-  });
+// //#region Possible Expansion
 
-  PruningItemsDisplay.innerHTML = template;
-}
+// function drawPruningItems() {
+//   let template = "";
+//   pruningItems.forEach((item) => {
+//     template += getPruningItemsTemplate(item);
+//   });
 
-function getPruningItemsTemplate(item) {
-  return /*html*/ `
-  <button onclick="addPruningItems('${item.name}')">
-    ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
-  </button>
-  `;
-}
+//   PruningItemsDisplay.innerHTML = template;
+// }
 
-let PruningItemsDisplay = document.getElementById("pruningItems");
+// function getPruningItemsTemplate(item) {
+//   return /*html*/ `
+//   <button onclick="addPruningItems('${item.name}')">
+//     ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
+//   </button>
+//   `;
+// }
 
-drawPruningItems();
+// let PruningItemsDisplay = document.getElementById("pruningItems");
 
-function drawThinningItems() {
-  let template = "";
-  thinningItems.forEach((item) => {
-    template += getThinningItemsTemplate(item);
-  });
+// drawPruningItems();
 
-  ThinningItemsDisplay.innerHTML = template;
-}
+// function drawThinningItems() {
+//   let template = "";
+//   thinningItems.forEach((item) => {
+//     template += getThinningItemsTemplate(item);
+//   });
 
-function getThinningItemsTemplate(item) {
-  return /*html*/ `
-  <button onclick="addthinningItems('${item.name}')">
-    ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
-  </button>
-  `;
-}
+//   ThinningItemsDisplay.innerHTML = template;
+// }
 
-let ThinningItemsDisplay = document.getElementById("thinningItems");
+// function getThinningItemsTemplate(item) {
+//   return /*html*/ `
+//   <button onclick="addthinningItems('${item.name}')">
+//     ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
+//   </button>
+//   `;
+// }
 
-drawThinningItems();
+// let ThinningItemsDisplay = document.getElementById("thinningItems");
+
+// drawThinningItems();
+
+// let pruningItems = [
+//   {
+//     name: "Pruners",
+//     price: 10,
+//     quantity: 1,
+//     multiplier: 5,
+//     durability: 100,
+//   },
+//   {
+//     name: "Mechanical Pruners",
+//     price: 40,
+//     quantity: 0,
+//     multiplier: 8,
+//     durability: 80,
+//   },
+//   {
+//     name: "Extension Saw",
+//     price: 120,
+//     quantity: 0,
+//     multiplier: 75,
+//     durability: 150,
+//   },
+// ];
+// let thinningItems = [
+//   {
+//     name: "By Hand",
+//     price: 10,
+//     quantity: 1,
+//     multiplier: 5,
+//     durability: 100,
+//   },
+//   {
+//     name: "The Whacker",
+//     price: 40,
+//     quantity: 0,
+//     multiplier: 8,
+//     durability: 80,
+//   },
+//   {
+//     name: "Thinning Machine",
+//     price: 120,
+//     quantity: 0,
+//     multiplier: 75,
+//     durability: 150,
+//   },
+// ];
+// //#endregion
