@@ -47,38 +47,38 @@ let pruningItems = {
 let thinningItems;
 let pickingItems;
 
-let farmWorkers = {
-  farmManager: {
+let farmWorkers = [
+  {
     name: "Farm Manager",
     pricePerDay: 0,
     multiplier: 25,
     experience: 2,
   },
-  kid: {
+  {
     name: "Kid",
     pricePerDay: 20,
     multiplier: 10,
     experience: 2,
   },
-  highSchooler: {
+  {
     name: "High Schooler",
     pricePerDay: 60,
     multiplier: 8,
     experience: 0,
   },
-  goGetter: {
+  {
     name: "Go Getter",
     pricePerDay: 100,
     multiplier: 20,
     experience: 4,
   },
-  farmLegend: {
+  {
     name: "Farm Legend",
     pricePerDay: 150,
     multiplier: 35,
     experience: 10,
   },
-};
+];
 
 let standWorkers = {
   standManager: {
@@ -155,7 +155,7 @@ function sales() {
 }
 
 function addWorker() {
-  let helper = farmWorkers.farmManager.multiplier;
+  let helper = farmWorkers[0].multiplier;
   farmMods = farmMods + helper;
   console.log(farmMods);
 }
@@ -174,3 +174,25 @@ function updateScreen() {
   daysLeftDisplay.innerHTML = "Days Left: " + daysLeft_Summer.toString();
   cashDisplay.innerHTML = "Cash: $" + cash.toString();
 }
+
+// Draw Items:
+function drawFarmWorkers() {
+  let template = "";
+  farmWorkers.forEach((item) => {
+    template += getFarmWorkerTemplate(item);
+  });
+
+  farmWorkersDisplay.innerHTML = template;
+}
+
+function getFarmWorkerTemplate(item) {
+  return /*html*/ `
+  <button onclick="equipItem('${item.name}')">
+    ${item.name} ${item.pricePerDay} ${item.multiplier}
+  </button>
+  `;
+}
+
+let farmWorkersDisplay = document.getElementById("farmWorkers");
+
+drawFarmWorkers();
