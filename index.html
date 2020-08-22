@@ -14,19 +14,34 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="hg-main">
     <header class="container-fluid hg-main">
-      <h1>Peach Farm</h1>
+      <h1>🍑 Peach Farm</h1>
     </header>
     <main class="container-fluid flex-grow-1">
-      <div class="row hg-sidekick">
-        <h2 id="bushel-count" class="col-4">Bushels Picked:</h2>
-        <h2 id="days-left" class="col-4">Days Left:</h2>
-        <h2 id="cash" class="col-4">Cash:</h2>
+      <div class="row text-center py-2 border-y-light hg-sidekick-darker">
+      <div class="col-4 text center">
+          <button type="button" class="btn start-buttons rounded" onclick="daysLeftSummer()">
+            Begin Harvest
+          </button>
+        </div><div class="col-4 text center">
+          <button type="button" class="btn start-buttons rounded" onclick="pause()">
+            Pause
+          </button>
+        </div><div class="col-4 text center">
+          <button type="button" class="btn start-buttons rounded" onclick="restart()">
+            Restart
+          </button>
+        </div>
+      </div>
+      <div class="row hg-main mt-1">
+        <div class="col-4"> <p id="bushel-count">Bushels Picked:</p></div>
+        <div class="col-4"><p id="days-left">Days Left:</p></div>
+        <div class="col-4"><p id="cash">Cash:</p></div>
       </div>
       <div class="row text-center my-3">
-        <div class="col-md-6">
-          <div class="card shadow border-for-card p-1 hg-snow" onclick="pick()" style="width: 18rem;">
+        <div class="col-md-4 d-flex justify-content-center">
+          <div type ="button" class="card shadow border-for-card p-1 hg-snow" onclick="pick()" style="width: 18rem;">
             <img class="card-img-top shadow" src="peaches-on-tree.jpg" alt="Card image cap">
             <div class="card-body">
               <p class="card-text rounded hg-snow shadow">Click to Pick the Peach Tree!
@@ -34,7 +49,7 @@
             </div>
           </div>          
          </div>
-        <div class="col-md-6">
+        <div class="col-md-4 d-flex justify-content-center">
           <div class="card shadow border-for-card p-1 hg-snow" onclick="sell()" style="width: 18rem;">
             <img class="card-img-top shadow" src="peaches-for-sale.jpg" alt="Card image cap">
             <div class="card-body">
@@ -43,21 +58,29 @@
             </div>
           </div>
         </div>
+        <div id="upgradeList" class="col-md-4">
+
+        </div>
          <div class="col-6">
            <!-- <img class="image-size rounded" src="peaches-for-sale.jpg" /> -->
         </div>
-        <div class="col-6">
-          <button type="button" class="btn btn-primary" onclick="daysLeftSummer()">
-            Begin Harvest
-          </button>
-        </div>
+        
       </div>  
      
-
-      <div id="farmWorkers"></div>
-      <div id="standWorkers"></div>
-      <div id="farmEquipment"></div>
-      <div id="farmSecurity"></footer>
+      <div class="row hg-main-darker">
+        <div class="col-12 shadow">
+        <h2 >Add to Your Farm</h2></div>
+        <div class="col-6">           
+           <h4>Hirelings and Help</h4>          
+          <div id="farmWorkers"></div>
+          <div id="standWorkers"></div>
+          <div id="farmSecurity"></div>
+      </div>
+      
+      <div class="col-6"><h4 class="shadow">Equipment and Infrastructure</h4>
+      <div id="farmEquipment"></div></div>
+        <footer class="container-fluid text-center py-3 hg-main">🍑 Crafted by StudeWorks 🍑
+      </footer>
 
     <!--#region  Scripts-->
     <script src="app.js"></script>

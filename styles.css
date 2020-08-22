@@ -1,5 +1,7 @@
 :root {
-  --hue-main: darkgreen;
+  --hue-main: hsl(120, 85%, 18%);
+  --hue-main-darker: hsl(120, 85%, 15%);
+  --hue-sidekick-darker: hsl(36, 100%, 50%);
   --hue-sidekick: orange;
   --hue-snow: hsla(218, 19%, 98%, 1);
 }
@@ -7,6 +9,9 @@
   height: 50vh;
 }
 
+p {
+  font-size: 0.85rem;
+}
 .hg-main {
   background-color: var(--hue-main);
   color: var(--hue-sidekick);
@@ -25,4 +30,21 @@
 
 .hg-snow {
   background-color: var(--hue-snow);
+}
+.hg-main-darker {
+  background-color: var(--hue-main-darker);
+}
+.start-buttons {
+  background-color: var(--hue-main);
+  border: 2px solid var(--hue-snow);
+  color: var(--hue-snow);
+}
+
+.border-y-light {
+  border-top: 3px solid var(--hue-snow);
+  border-bottom: 3px solid var(--hue-snow);
+}
+
+.hg-sidekick-darker {
+  background-color: var(--hue-sidekick-darker);
 }

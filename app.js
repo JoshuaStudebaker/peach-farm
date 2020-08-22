@@ -128,13 +128,14 @@ let standWorkers = [
 
 // Display IDs
 let bushelsDisplay = document.getElementById("bushel-count");
-let timeOfYearDisplay = document.getElementById("time-of-year");
 let daysLeftDisplay = document.getElementById("days-left");
 let cashDisplay = document.getElementById("cash");
 let farmWorkersDisplay = document.getElementById("farmWorkers");
 let standWorkersDisplay = document.getElementById("standWorkers");
 let farmEquipmentDisplay = document.getElementById("farmEquipment");
 let farmSecurityDisplay = document.getElementById("farmSecurity");
+let upgradeDisplay = document.getElementById("upgradeList");
+let farmNameDisplay = document.getElementById("famName");
 
 // Intervals
 function dayCountSummer() {
@@ -146,18 +147,15 @@ function dayCountSummer() {
   updateScreen();
 }
 
-function season() {}
-
 function daysLeftSummer() {
   let days = setInterval(dayCountSummer, 1000);
 }
 
-function drawSummer() {
-  let template;
+function cashInterval() {
+  let cash = setInterval(peachSelling, 2000);
 }
 
 // Game
-
 function peachSelling() {
   if (bushelsPicked > 0) {
     bushelsPicked -= standMods;
@@ -165,16 +163,6 @@ function peachSelling() {
     cash += peachesSold * pricePerPound_1s;
   }
   updateScreen();
-}
-
-function cashInterval() {
-  let cash = setInterval(peachSelling, 2000);
-}
-
-function sales() {
-  daysLeftSummer();
-  // addMods()
-  // TODO cash inflow needs to equal the amount of bushels
 }
 
 function addFarmWorker(worker) {
@@ -185,9 +173,6 @@ function addFarmWorker(worker) {
       cashOutflow += farmWorker.pricePerDay;
     }
   }
-
-  console.log(farmMods);
-  console.log(cashOutflow);
 }
 
 function addStandWorker(worker) {
@@ -198,12 +183,8 @@ function addStandWorker(worker) {
       cashOutflow += standWorker.pricePerDay;
     }
   }
-
-  console.log(standMods);
-  console.log(cashOutflow);
 }
 
-cashInterval();
 function pick() {
   if (daysLeft_Summer < 100) {
     peachesPicked += farmMods;
@@ -219,7 +200,9 @@ function updateScreen() {
   cashDisplay.innerHTML = "Cash: $" + cash.toString();
 }
 
-// Draw Items:
+// #region Draw Items:
+//
+// Farm Worker Draw
 function drawFarmWorkers() {
   let template = "";
   farmWorkers.forEach((item) => {
@@ -231,12 +214,13 @@ function drawFarmWorkers() {
 
 function getFarmWorkerTemplate(item) {
   return /*html*/ `
-  <button onclick="addFarmWorker('${item.name}')">
-  ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
-  </button>
+  <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0">
+  ${item.name}: </p><p class="mb-0">Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
+  </p></div>
   `;
 }
 
+// Stand Worker Draw
 function drawStandWorkers() {
   let template = "";
   standWorkers.forEach((item) => {
@@ -248,12 +232,13 @@ function drawStandWorkers() {
 
 function getStandWorkerTemplate(item) {
   return /*html*/ `
-  <button onclick="addStandWorker('${item.name}')">
+  <div class="border-for-card"><p> onclick="addStandWorker('${item.name}')">
   ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
-  </button>
+  </p></div>
   `;
 }
 
+// Farm Equipment Draw
 function drawFarmEquipment() {
   let template = "";
   farmEquipment.forEach((item) => {
@@ -265,11 +250,13 @@ function drawFarmEquipment() {
 
 function getFarmEquipmentTemplate(item) {
   return /*html*/ `
-  <button onclick="addFarmEquipment('${item.name}')">
+  <div class="border-for-card"><p> onclick="addFarmEquipment('${item.name}')">
   ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
-  </button>
+  </p></div>
   `;
 }
+
+// Farm Security Draw
 function drawFarmSecurity() {
   let template = "";
   farmSecurity.forEach((item) => {
@@ -281,15 +268,21 @@ function drawFarmSecurity() {
 
 function getFarmSecurityTemplate(item) {
   return /*html*/ `
-  <button onclick="addFarmSecurity('${item.name}')">
+  <div class="border-for-card"><p> onclick="addFarmSecurity('${item.name}')">
   ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
-  </button>
+  </p></div>
   `;
 }
+// //#endregion
+
+// #region All the Runners
 drawFarmWorkers();
 drawStandWorkers();
 drawFarmEquipment();
 drawFarmSecurity();
+cashInterval();
+drawFarmName();
+// #endregion
 
 // //#region Possible Expansion
 
@@ -306,7 +299,7 @@ drawFarmSecurity();
 //   return /*html*/ `
 //   <button onclick="addPruningItems('${item.name}')">
 //     ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
-//   </button>
+//   </button
 //   `;
 // }
 
