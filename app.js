@@ -19,6 +19,7 @@ let spring = "Spring";
 let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
 let salesMods = 1;
+let cashOutflow = 0;
 
 // Farm Items
 let farmSecurity = [
@@ -182,10 +183,17 @@ function sales() {
   // TODO cash inflow needs to equal the amount of bushels
 }
 
-function addWorker() {
-  let helper = farmWorkers[0].multiplier;
-  farmMods = farmMods + helper;
+function addFarmWorker(worker) {
+  for (let i = 0; i < farmWorkers.length; i++) {
+    let farmWorker = farmWorkers[i];
+    if (farmWorker.name == worker) {
+      farmMods += farmWorker.multiplier;
+      cashOutflow += farmWorker.pricePerDay;
+    }
+  }
+
   console.log(farmMods);
+  console.log(cashOutflow);
 }
 cashInterval();
 function pick() {
