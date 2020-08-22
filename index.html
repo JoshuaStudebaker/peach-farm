@@ -24,39 +24,20 @@
         <h2 id="days-left" class="col-4">Days Left:</h2>
         <h2 id="cash" class="col-4">Cash:</h2>
       </div>
-      <div class="row">
-        <!-- <div class="col-4">Winter</div> -->
-
-        <!-- <div class="col-4">Spring</div> -->
-
-        <div class="col-4">
-          <img
-            onclick="pick()"
-            class="image-size rounded"
-            src="high-tunnel-pic.jpg"
-          />
-          <!-- Summer -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="daysLeftSummer()"
-          >
+      <div class="row text-center">
+        <div class="col-6">
+          <img onclick="pick()" class="image-size rounded" src="peaches-on-tree.jpg" />
+         </div>
+         <div class="col-6">
+           <img class="image-size rounded" src="peaches-for-sale.jpg" />
+        </div>
+        <div class="col-12">
+          <button type="button" class="btn btn-primary" onclick="daysLeftSummer()">
             Begin Harvest
           </button>
-        
-      <div class="row"></div>
-      <div class="row my-2">
-        <div class="col-4">
-          <button class="btn btn-primary" onclick="addWorker()">
-            Add Worker
-          </button>
-          <button class="btn btn-primary" onclick="addSales()">
-            Add Stand Manager
-          </button>
         </div>
-        <div class="col-4"></div>
-        <div class="col-4"></div>
-      </div>
+      </div>  
+     
 
       <div id="farmWorkers"></div>
       <div id="standWorkers"></div>

@@ -18,7 +18,7 @@ let winter = "Winter";
 let spring = "Spring";
 let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
-let salesMods = 1;
+let standMods = 1;
 let cashOutflow = 0;
 
 // Farm Items
@@ -158,16 +158,10 @@ function drawSummer() {
 
 // Game
 
-function addSales() {
-  let helper = standWorkers[0].multiplier;
-  salesMods = salesMods + helper;
-  console.log(salesMods);
-}
-
 function peachSelling() {
   if (bushelsPicked > 0) {
-    bushelsPicked -= salesMods;
-    peachesSold = salesMods;
+    bushelsPicked -= standMods;
+    peachesSold = standMods;
     cash += peachesSold * pricePerPound_1s;
   }
   updateScreen();
@@ -195,6 +189,20 @@ function addFarmWorker(worker) {
   console.log(farmMods);
   console.log(cashOutflow);
 }
+
+function addStandWorker(worker) {
+  for (let i = 0; i < standWorkers.length; i++) {
+    let standWorker = standWorkers[i];
+    if (standWorker.name == worker) {
+      standMods += standWorker.multiplier;
+      cashOutflow += standWorker.pricePerDay;
+    }
+  }
+
+  console.log(standMods);
+  console.log(cashOutflow);
+}
+
 cashInterval();
 function pick() {
   if (daysLeft_Summer < 100) {
