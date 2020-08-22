@@ -21,30 +21,52 @@ let farmMods = 1;
 let salesMods = 1;
 
 // items/upgrades
-let pruningItems = {
-  pruners: {
+let pruningItems = [
+  {
     name: "Pruners",
     price: 10,
     quantity: 1,
     multiplier: 5,
     durability: 100,
   },
-  mechanicalPruners: {
+  {
     name: "Mechanical Pruners",
     price: 40,
     quantity: 0,
     multiplier: 8,
     durability: 80,
   },
-  extensionSaw: {
+  {
     name: "Extension Saw",
     price: 120,
     quantity: 0,
     multiplier: 75,
     durability: 150,
   },
-};
-let thinningItems;
+];
+let thinningItems = [
+  {
+    name: "By Hand",
+    price: 10,
+    quantity: 1,
+    multiplier: 5,
+    durability: 100,
+  },
+  {
+    name: "The Whacker",
+    price: 40,
+    quantity: 0,
+    multiplier: 8,
+    durability: 80,
+  },
+  {
+    name: "Thinning Machine",
+    price: 120,
+    quantity: 0,
+    multiplier: 75,
+    durability: 150,
+  },
+];
 let pickingItems;
 
 let farmWorkers = [
@@ -80,26 +102,26 @@ let farmWorkers = [
   },
 ];
 
-let standWorkers = {
-  standManager: {
+let standWorkers = [
+  {
     name: "Stand Manager",
     pricePerDay: 0,
     multiplier: 5,
     experience: 0,
   },
-  retailer: {
+  {
     name: "Retail Seller",
     pricePerDay: 75,
     multiplier: 10,
     experience: 0,
   },
-  boxer: {
+  {
     name: "Boxer",
     pricePerDay: 80,
     multiplier: 15,
     experience: 0,
   },
-};
+];
 
 // Element IDs
 let bushelsDisplay = document.getElementById("bushel-count");
@@ -187,8 +209,8 @@ function drawFarmWorkers() {
 
 function getFarmWorkerTemplate(item) {
   return /*html*/ `
-  <button onclick="equipItem('${item.name}')">
-    ${item.name} ${item.pricePerDay} ${item.multiplier}
+  <button onclick="addFarmWorker('${item.name}')">
+    ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
   </button>
   `;
 }
@@ -196,3 +218,66 @@ function getFarmWorkerTemplate(item) {
 let farmWorkersDisplay = document.getElementById("farmWorkers");
 
 drawFarmWorkers();
+
+function drawStandWorkers() {
+  let template = "";
+  standWorkers.forEach((item) => {
+    template += getStandWorkerTemplate(item);
+  });
+
+  standWorkersDisplay.innerHTML = template;
+}
+
+function getStandWorkerTemplate(item) {
+  return /*html*/ `
+  <button onclick="addStandWorker('${item.name}')">
+    ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
+  </button>
+  `;
+}
+
+let standWorkersDisplay = document.getElementById("standWorkers");
+
+drawStandWorkers();
+
+function drawPruningItems() {
+  let template = "";
+  pruningItems.forEach((item) => {
+    template += getPruningItemsTemplate(item);
+  });
+
+  PruningItemsDisplay.innerHTML = template;
+}
+
+function getPruningItemsTemplate(item) {
+  return /*html*/ `
+  <button onclick="addPruningItems('${item.name}')">
+    ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
+  </button>
+  `;
+}
+
+let PruningItemsDisplay = document.getElementById("pruningItems");
+
+drawPruningItems();
+
+function drawThinningItems() {
+  let template = "";
+  thinningItems.forEach((item) => {
+    template += getThinningItemsTemplate(item);
+  });
+
+  ThinningItemsDisplay.innerHTML = template;
+}
+
+function getThinningItemsTemplate(item) {
+  return /*html*/ `
+  <button onclick="addthinningItems('${item.name}')">
+    ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
+  </button>
+  `;
+}
+
+let ThinningItemsDisplay = document.getElementById("thinningItems");
+
+drawThinningItems();
