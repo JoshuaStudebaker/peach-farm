@@ -1,3 +1,28 @@
+:root {
+  --hue-main: darkgreen;
+  --hue-sidekick: orange;
+  --hue-snow: hsla(218, 19%, 98%, 1);
+}
 .image-size {
   height: 50vh;
+}
+
+.hg-main {
+  background-color: var(--hue-main);
+  color: var(--hue-sidekick);
+  text-shadow: red;
+}
+
+.hg-sidekick {
+  background-color: var(--hue-sidekick);
+  color: red;
+  text-shadow: var(--hue-main);
+}
+
+.border-for-card {
+  border: 2px solid var(--hue-main);
+}
+
+.hg-snow {
+  background-color: var(--hue-snow);
 }

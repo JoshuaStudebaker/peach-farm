@@ -15,23 +15,38 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="container-fluid bg-primary">
+    <header class="container-fluid hg-main">
       <h1>Peach Farm</h1>
     </header>
     <main class="container-fluid flex-grow-1">
-      <div class="row bg-warning">
+      <div class="row hg-sidekick">
         <h2 id="bushel-count" class="col-4">Bushels Picked:</h2>
         <h2 id="days-left" class="col-4">Days Left:</h2>
         <h2 id="cash" class="col-4">Cash:</h2>
       </div>
-      <div class="row text-center">
-        <div class="col-6">
-          <img onclick="pick()" class="image-size rounded" src="peaches-on-tree.jpg" />
+      <div class="row text-center my-3">
+        <div class="col-md-6">
+          <div class="card shadow border-for-card p-1 hg-snow" onclick="pick()" style="width: 18rem;">
+            <img class="card-img-top shadow" src="peaches-on-tree.jpg" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text rounded hg-snow shadow">Click to Pick the Peach Tree!
+              </p>
+            </div>
+          </div>          
          </div>
-         <div class="col-6">
-           <img class="image-size rounded" src="peaches-for-sale.jpg" />
+        <div class="col-md-6">
+          <div class="card shadow border-for-card p-1 hg-snow" onclick="sell()" style="width: 18rem;">
+            <img class="card-img-top shadow" src="peaches-for-sale.jpg" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text rounded hg-snow shadow">Meanwhile at the Peach Stand...
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="col-12">
+         <div class="col-6">
+           <!-- <img class="image-size rounded" src="peaches-for-sale.jpg" /> -->
+        </div>
+        <div class="col-6">
           <button type="button" class="btn btn-primary" onclick="daysLeftSummer()">
             Begin Harvest
           </button>
