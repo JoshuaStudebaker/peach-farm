@@ -1,28 +1,17 @@
 // Starting Variables
 let peachesPicked = 0;
-let bushelsPicked = 0;
 let peachesInCooler = 0;
 let peachesSold = 0;
-let pricePerPound_1s = 3.5;
-let pricePerPound_2s = 1;
+let pricePerPound_1s = 4;
 let pricePerPound_Wholesale = 1.5;
-let bushelsPerTree = 2;
-let trees = 1000;
-let dog = "";
-let farmerName = "";
-let orchardName = "";
 let cash = 10000;
-let daysLeft_Winter = 60;
-let daysLeft_Spring = 90;
 let daysLeft_Summer = 100;
-let winter = "Winter";
-let spring = "Spring";
-let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
 let standMods = 1;
 let cashOut = 0;
 let cashIn = 0;
 let farmWorkersHired = [];
+let standWorkersHired = [];
 
 // Farm Items
 let farmSecurity = [
@@ -188,6 +177,20 @@ function cashInAndOut() {
   cashOutflow();
 }
 
+function fireFarmWorker(worker) {
+  for (let i = 0; i < farmWorkersHired.length; i++) {
+    let farmWorkerFired = farmWorkersHired[i];
+    if (farmWorkerFired.name == worker) {
+      farmMods -= farmWorkerFired.multiplier;
+      cashOut -= farmWorkerFired.pricePerDay;
+      farmWorkersHired.splice(i, 1);
+      farmWorkers.push(farmWorkerFired);
+      drawFarmWorkers();
+      drawFarmWorkersHired();
+    }
+  }
+}
+
 function addFarmWorker(worker) {
   for (let i = 0; i < farmWorkers.length; i++) {
     let farmWorker = farmWorkers[i];
@@ -284,7 +287,7 @@ function drawFarmWorkersHired() {
 function getFarmWorkersHiredTemplate(item) {
   return /*html*/ `
   <div class="border-for-card"><p class="mb-0 pl-1"><u>
-  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
+  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p><button type="button" class="btn" onclick="fireFarmWorker('${item.name}')")>Fire</button>
   </div>
   `;
 }
