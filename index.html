@@ -20,24 +20,29 @@
     </header>
     <main class="container-fluid flex-grow-1">
       <div class="row text-center py-2 border-y-light hg-sidekick-darker">
-      <div class="col-4 text center">
+      <div class="col-6 text center">
           <button type="button" class="btn start-buttons rounded" onclick="daysLeftSummer()">
             Begin Harvest
           </button>
-        </div><div class="col-4 text center">
+        </div><div class="col-6 text center">
           <button type="button" class="btn start-buttons rounded" onclick="pause()">
             Pause
           </button>
-        </div><div class="col-4 text center">
-          <button type="button" class="btn start-buttons rounded" onclick="restart()">
-            Restart
-          </button>
         </div>
+        
       </div>
       <div class="row hg-main mt-1">
-        <div class="col-4"> <p id="bushel-count">Bushels Picked:</p></div>
+        <div class="col-4"> 
+          <p id="bushel-count" class="my-0">Bushels Picked:</p>
+          <p id="bushels-sold"class="my-0" >Bushels Sold:</p>
+          <p id="bushels-in-storage" class="my-0">Bushels in the Cooler:</p>
+        </div>
         <div class="col-4"><p id="days-left">Days Left:</p></div>
-        <div class="col-4"><p id="cash">Cash:</p></div>
+        <div class="col-4">
+          <p id="cash" class="my-0" >Cash:</p>
+          <p id="cash-in" class="my-0">Inflow:</p>
+          <p id="cash-out" class="my-0" >Outflow:</p>
+        </div>
       </div>
       <div class="row text-center my-3">
         <div class="col-md-4 d-flex justify-content-center">

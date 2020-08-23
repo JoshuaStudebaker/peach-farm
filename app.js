@@ -137,6 +137,10 @@ let farmEquipmentDisplay = document.getElementById("farmEquipment");
 let farmSecurityDisplay = document.getElementById("farmSecurity");
 let farmWorkersHiredDisplay = document.getElementById("farmWorkersHired");
 let farmNameDisplay = document.getElementById("famName");
+let bushelsSoldDisplay = document.getElementById("bushels-sold");
+let bushelsInStorageDisplay = document.getElementById("bushels-in-storage");
+let cashOutDisplay = document.getElementById("cash-out");
+let cashInDisplay = document.getElementById("cash-in");
 
 // Intervals
 function dayCountSummer() {
