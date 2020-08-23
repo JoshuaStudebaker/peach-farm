@@ -1,6 +1,7 @@
 // Starting Variables
 let peachesPicked = 0;
 let bushelsPicked = 0;
+let peachesInCooler = 0;
 let peachesSold = 0;
 let pricePerPound_1s = 3.5;
 let pricePerPound_2s = 1;
@@ -20,6 +21,7 @@ let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
 let standMods = 1;
 let cashOut = 0;
+let cashIn = 0;
 let farmWorkersHired = [];
 
 // Farm Items
@@ -166,10 +168,11 @@ function cashInterval() {
 
 // Game
 function peachSelling() {
-  if (bushelsPicked > 0) {
-    bushelsPicked -= standMods;
+  if (peachesInCooler > 0) {
+    peachesInCooler -= standMods;
     peachesSold = standMods;
-    cash += peachesSold * pricePerPound_1s;
+    cashIn = peachesSold * pricePerPound_1s;
+    cash += cashIn;
   }
   updateScreen();
 }
@@ -212,16 +215,22 @@ function addStandWorker(worker) {
 function pick() {
   if (daysLeft_Summer < 100) {
     peachesPicked += farmMods;
-    bushelsPicked = Math.ceil(peachesPicked / 4);
+    peachesInCooler += farmMods;
+    // bushelsPicked = Math.ceil(peachesPicked / 4);
   }
 
   updateScreen();
 }
 
 function updateScreen() {
-  bushelsDisplay.innerHTML = "Bushels Picked: " + bushelsPicked.toString();
+  bushelsDisplay.innerHTML = "Peaches Picked: " + peachesPicked.toString();
   daysLeftDisplay.innerHTML = "Days Left: " + daysLeft_Summer.toString();
   cashDisplay.innerHTML = "Cash: $" + cash.toString();
+  cashInDisplay.innerHTML = "Inflow: $" + cashIn.toString();
+  cashOutDisplay.innerHTML = "Wage Load: $" + cashOut.toString();
+  bushelsInStorageDisplay.innerHTML =
+    "Peaches in Cooler: " + peachesInCooler.toString();
+  bushelsSoldDisplay.innerHTML = "Peaches Sold: " + peachesSold.toString();
 }
 
 // #region Draw Items:
