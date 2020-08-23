@@ -20,6 +20,7 @@ let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
 let standMods = 1;
 let cashOutflow = 0;
+let farmWorkersHired = [];
 
 // Farm Items
 let farmSecurity = [
@@ -74,34 +75,34 @@ let standInfrastructure = [{}];
 
 let farmWorkers = [
   {
-    name: "Farm Manager",
+    name: "Grandad",
     pricePerDay: 0,
-    multiplier: 25,
-    experience: 2,
-  },
-  {
-    name: "Kid",
-    pricePerDay: 20,
-    multiplier: 10,
-    experience: 2,
-  },
-  {
-    name: "High Schooler",
-    pricePerDay: 60,
-    multiplier: 8,
+    multiplier: 5,
     experience: 0,
   },
   {
-    name: "Go Getter",
-    pricePerDay: 100,
-    multiplier: 20,
-    experience: 4,
+    name: "Toots and Boots (Yes, you have kids)",
+    pricePerDay: 0,
+    multiplier: 10,
+    experience: 0,
   },
   {
-    name: "Farm Legend",
-    pricePerDay: 150,
-    multiplier: 35,
-    experience: 10,
+    name: "Space Case",
+    pricePerDay: 60,
+    multiplier: 5,
+    experience: 0,
+  },
+  {
+    name: "Mrs. Olott",
+    pricePerDay: 70,
+    multiplier: 7,
+    experience: 0,
+  },
+  {
+    name: "Noah Schoow",
+    pricePerDay: 50,
+    multiplier: 4,
+    experience: 0,
   },
 ];
 
@@ -134,7 +135,7 @@ let farmWorkersDisplay = document.getElementById("farmWorkers");
 let standWorkersDisplay = document.getElementById("standWorkers");
 let farmEquipmentDisplay = document.getElementById("farmEquipment");
 let farmSecurityDisplay = document.getElementById("farmSecurity");
-let upgradeDisplay = document.getElementById("upgradeList");
+let farmWorkersHiredDisplay = document.getElementById("farmWorkersHired");
 let farmNameDisplay = document.getElementById("famName");
 
 // Intervals
@@ -148,7 +149,11 @@ function dayCountSummer() {
 }
 
 function daysLeftSummer() {
-  let days = setInterval(dayCountSummer, 1000);
+  setInterval(dayCountSummer, 1000);
+}
+
+function pause() {
+  clearInterval(daysLeft_Summer);
 }
 
 function cashInterval() {
@@ -171,6 +176,10 @@ function addFarmWorker(worker) {
     if (farmWorker.name == worker) {
       farmMods += farmWorker.multiplier;
       cashOutflow += farmWorker.pricePerDay;
+      farmWorkers.splice(i, 1);
+      farmWorkersHired.push(farmWorker);
+      drawFarmWorkers();
+      drawFarmWorkersHired();
     }
   }
 }
@@ -214,9 +223,27 @@ function drawFarmWorkers() {
 
 function getFarmWorkerTemplate(item) {
   return /*html*/ `
-  <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0">
-  ${item.name}: </p><p class="mb-0">Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
-  </p></div>
+  <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0 pl-1"><u>
+  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
+  </div>
+  `;
+}
+
+// Hired Farm Worker Draw
+function drawFarmWorkersHired() {
+  let template = "";
+  farmWorkersHired.forEach((item) => {
+    template += getFarmWorkersHiredTemplate(item);
+  });
+
+  farmWorkersHiredDisplay.innerHTML = template;
+}
+
+function getFarmWorkersHiredTemplate(item) {
+  return /*html*/ `
+  <div class="border-for-card"><p class="mb-0 pl-1"><u>
+  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
+  </div>
   `;
 }
 
@@ -281,7 +308,7 @@ drawStandWorkers();
 drawFarmEquipment();
 drawFarmSecurity();
 cashInterval();
-drawFarmName();
+
 // #endregion
 
 // //#region Possible Expansion
