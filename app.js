@@ -19,7 +19,7 @@ let spring = "Spring";
 let summer = "Summer (aka the Harvest)";
 let farmMods = 1;
 let standMods = 1;
-let cashOutflow = 0;
+let cashOut = 0;
 let farmWorkersHired = [];
 
 // Farm Items
@@ -149,7 +149,7 @@ function dayCountSummer() {
 }
 
 function daysLeftSummer() {
-  setInterval(dayCountSummer, 1000);
+  setInterval(dayCountSummer, 2000);
 }
 
 function pause() {
@@ -157,7 +157,7 @@ function pause() {
 }
 
 function cashInterval() {
-  let cash = setInterval(peachSelling, 2000);
+  let cash = setInterval(cashInAndOut, 2000);
 }
 
 // Game
@@ -170,12 +170,23 @@ function peachSelling() {
   updateScreen();
 }
 
+function cashOutflow() {
+  if (cash > 0) {
+    cash -= cashOut;
+  }
+}
+
+function cashInAndOut() {
+  peachSelling();
+  cashOutflow();
+}
+
 function addFarmWorker(worker) {
   for (let i = 0; i < farmWorkers.length; i++) {
     let farmWorker = farmWorkers[i];
     if (farmWorker.name == worker) {
       farmMods += farmWorker.multiplier;
-      cashOutflow += farmWorker.pricePerDay;
+      cashOut += farmWorker.pricePerDay;
       farmWorkers.splice(i, 1);
       farmWorkersHired.push(farmWorker);
       drawFarmWorkers();
@@ -189,7 +200,7 @@ function addStandWorker(worker) {
     let standWorker = standWorkers[i];
     if (standWorker.name == worker) {
       standMods += standWorker.multiplier;
-      cashOutflow += standWorker.pricePerDay;
+      cashOut += standWorker.pricePerDay;
     }
   }
 }
