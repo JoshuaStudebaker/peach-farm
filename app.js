@@ -127,6 +127,7 @@ let standWorkersDisplay = document.getElementById("standWorkers");
 let farmEquipmentDisplay = document.getElementById("farmEquipment");
 let farmSecurityDisplay = document.getElementById("farmSecurity");
 let farmWorkersHiredDisplay = document.getElementById("farmWorkersHired");
+let standWorkersHiredDisplay = document.getElementById("standWorkersHired");
 let farmNameDisplay = document.getElementById("famName");
 let bushelsSoldDisplay = document.getElementById("bushels-sold");
 let bushelsInStorageDisplay = document.getElementById("bushels-in-storage");
@@ -191,6 +192,20 @@ function fireFarmWorker(worker) {
   }
 }
 
+function fireStandWorker(worker) {
+  for (let i = 0; i < standWorkersHired.length; i++) {
+    let standWorkerFired = standWorkersHired[i];
+    if (standWorkerFired.name == worker) {
+      standMods -= standWorkerFired.multiplier;
+      cashOut -= standWorkerFired.pricePerDay;
+      standWorkersHired.splice(i, 1);
+      standWorkers.push(standWorkerFired);
+      drawStandWorkers();
+      drawStandWorkersHired();
+    }
+  }
+}
+
 function addFarmWorker(worker) {
   for (let i = 0; i < farmWorkers.length; i++) {
     let farmWorker = farmWorkers[i];
@@ -211,6 +226,10 @@ function addStandWorker(worker) {
     if (standWorker.name == worker) {
       standMods += standWorker.multiplier;
       cashOut += standWorker.pricePerDay;
+      standWorkers.splice(i, 1);
+      standWorkersHired.push(standWorker);
+      drawStandWorkers();
+      drawStandWorkersHired();
     }
   }
 }
@@ -275,7 +294,8 @@ function getFarmWorkerTemplate(item) {
 
 // Stand Worker Draw
 function drawStandWorkers() {
-  let template = "";
+  let template =
+    "<tr><td>Name:</td><td class='pr-1'>Wage:</td><td class='pr-1'>Retail Boost+</td></tr>";
   standWorkers.forEach((item) => {
     template += getStandWorkerTemplate(item);
   });
@@ -284,10 +304,18 @@ function drawStandWorkers() {
 }
 
 function getStandWorkerTemplate(item) {
-  return /*html*/ `
-  <div class="border-for-card" type="button" onclick="addStandWorker('${item.name}')"><p class="mb-0 pl-1"><u>
-  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Retail Boost+: ${item.multiplier}</p>
-  </div>
+  return /*html*/ `    
+    <tr>
+      <td>
+        <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addStandWorker('${item.name}')">${item.name}:</button>
+      </td>
+      <td class="pr-1">
+        $${item.pricePerDay}/day
+      </td>
+      <td class="text-center pr-1">
+        ${item.multiplier}
+      </td>
+    </tr>  
   `;
 }
 
@@ -305,6 +333,23 @@ function getFarmWorkersHiredTemplate(item) {
   return /*html*/ `
   <div class="border-for-card"><p class="mb-0 pl-1"><u>
   ${item.name}</u>: $${item.pricePerDay}/day, Productivity: ${item.multiplier}<button type="button" class="btn" onclick="fireFarmWorker('${item.name}')")>Fire</button></p>
+  </div>
+  `;
+}
+
+function drawStandWorkersHired() {
+  let template = "";
+  standWorkersHired.forEach((item) => {
+    template += getStandWorkersHiredTemplate(item);
+  });
+
+  standWorkersHiredDisplay.innerHTML = template;
+}
+
+function getStandWorkersHiredTemplate(item) {
+  return /*html*/ `
+  <div class="border-for-card"><p class="mb-0 pl-1"><u>
+  ${item.name}</u>: $${item.pricePerDay}/day, Productivity: ${item.multiplier}<button type="button" class="btn" onclick="fireStandWorker('${item.name}')")>Fire</button></p>
   </div>
   `;
 }
