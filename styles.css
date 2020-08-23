@@ -12,6 +12,11 @@
 p {
   font-size: 0.75rem;
 }
+
+tr {
+  font-size: 0.75rem;
+  border-bottom: 1px solid black;
+}
 .hg-main {
   background-color: var(--hue-main);
   color: var(--hue-sidekick);

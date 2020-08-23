@@ -72,7 +72,7 @@ let farmWorkers = [
     experience: 0,
   },
   {
-    name: "Toots and Boots (Yes, you have kids)",
+    name: "Toots and Boots",
     pricePerDay: 0,
     multiplier: 10,
     experience: 0,
@@ -240,7 +240,8 @@ function updateScreen() {
 //
 // Farm Worker Draw
 function drawFarmWorkers() {
-  let template = "";
+  let template =
+    "<tr><td>Name:</td><td class='pr-1'>Wage:</td><td class='pr-1'>Productivity:</td></tr>";
   farmWorkers.forEach((item) => {
     template += getFarmWorkerTemplate(item);
   });
@@ -248,22 +249,27 @@ function drawFarmWorkers() {
   farmWorkersDisplay.innerHTML = template;
 }
 
-function getFarmWorkerTemplate2(item) {
-  return /*html*/ `
-  <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0 pl-1"><u>
-  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
-  </div>
-  `;
-}
+// function getFarmWorkerTemplate2(item) {
+//   return /*html*/ `
+//   <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0 pl-1"><u>
+//   ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
+//   </div>
+//   `;
+// }
 //
 function getFarmWorkerTemplate(item) {
-  return /*html*/ `
-  
-    
-      <button type="button" class="dropdown-item" href="" onclick="addFarmWorker('${item.name}')">${item.name}</button>
-      
-    
-  
+  return /*html*/ `    
+    <tr>
+      <td>
+        <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addFarmWorker('${item.name}')">${item.name}:</button>
+      </td>
+      <td class="pr-1">
+        $${item.pricePerDay}/day
+      </td>
+      <td class="text-center pr-1">
+        ${item.multiplier}
+      </td>
+    </tr>  
   `;
 }
 
