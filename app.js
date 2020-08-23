@@ -240,6 +240,24 @@ function getFarmWorkerTemplate(item) {
   `;
 }
 
+// Stand Worker Draw
+function drawStandWorkers() {
+  let template = "";
+  standWorkers.forEach((item) => {
+    template += getStandWorkerTemplate(item);
+  });
+
+  standWorkersDisplay.innerHTML = template;
+}
+
+function getStandWorkerTemplate(item) {
+  return /*html*/ `
+  <div class="border-for-card" type="button" onclick="addStandWorker('${item.name}')"><p class="mb-0 pl-1"><u>
+  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Retail Boost+: ${item.multiplier}</p>
+  </div>
+  `;
+}
+
 // Hired Farm Worker Draw
 function drawFarmWorkersHired() {
   let template = "";
@@ -255,24 +273,6 @@ function getFarmWorkersHiredTemplate(item) {
   <div class="border-for-card"><p class="mb-0 pl-1"><u>
   ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
   </div>
-  `;
-}
-
-// Stand Worker Draw
-function drawStandWorkers() {
-  let template = "";
-  standWorkers.forEach((item) => {
-    template += getStandWorkerTemplate(item);
-  });
-
-  standWorkersDisplay.innerHTML = template;
-}
-
-function getStandWorkerTemplate(item) {
-  return /*html*/ `
-  <div class="border-for-card"><p> onclick="addStandWorker('${item.name}')">
-  ${item.name}: Cost: ${item.pricePerDay} Productivity: ${item.multiplier}
-  </p></div>
   `;
 }
 
