@@ -248,11 +248,22 @@ function drawFarmWorkers() {
   farmWorkersDisplay.innerHTML = template;
 }
 
-function getFarmWorkerTemplate(item) {
+function getFarmWorkerTemplate2(item) {
   return /*html*/ `
   <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0 pl-1"><u>
   ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
   </div>
+  `;
+}
+//
+function getFarmWorkerTemplate(item) {
+  return /*html*/ `
+  
+    
+      <button type="button" class="dropdown-item" href="" onclick="addFarmWorker('${item.name}')">${item.name}</button>
+      
+    
+  
   `;
 }
 
@@ -287,7 +298,7 @@ function drawFarmWorkersHired() {
 function getFarmWorkersHiredTemplate(item) {
   return /*html*/ `
   <div class="border-for-card"><p class="mb-0 pl-1"><u>
-  ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p><button type="button" class="btn" onclick="fireFarmWorker('${item.name}')")>Fire</button>
+  ${item.name}</u>: $${item.pricePerDay}/day, Productivity: ${item.multiplier}<button type="button" class="btn" onclick="fireFarmWorker('${item.name}')")>Fire</button></p>
   </div>
   `;
 }
