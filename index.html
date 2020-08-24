@@ -63,17 +63,16 @@
             <img class="card-img-top shadow" src="peaches-for-sale.jpg" alt="Card image cap">
             <div class="card-body">
               <p class="card-text rounded hg-snow shadow">Meanwhile at the Peach Stand...<br/>(Hint: Hire folks for your stand, so you can concentrate on the harvest)
-              </p>
-              
+              </p>              
             </div>
           </div>
         </div>
         <div class="col-md-4 text-left">
-          <h4 >Add to Your Farm</h4>                     
-            <h5>Hire:</h4>          
+          <h5><u>Add to Your Farm</u></h5>                     
+            <h5>Hire:</h5>          
             <div>
               <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                <button class="btn btn-secondary dropdown-toggle btn-sm my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   Farm Workers
                 </button>
@@ -83,7 +82,7 @@
             </div>
             <div>
               <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                <button class="btn btn-secondary dropdown-toggle btn-sm my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   Stand Workers
                 </button>
@@ -92,10 +91,10 @@
                 </div>
               </div>
             </div>
-            <h5>Equipment and Infrastructure:</h4>
+            <h5>Buy:</h5>
               <div>
                 <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                  <button class="btn btn-secondary dropdown-toggle btn-sm my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Farm Equipment
                   </button>
@@ -106,7 +105,7 @@
               </div>
               <div>
                 <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                  <button class="btn btn-secondary dropdown-toggle btn-sm my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Stand Infrastructure
                   </button>
@@ -117,19 +116,14 @@
               </div>
         </div>        
       </div>       
-      <div class="row hg-main-darker">
-        <div class="col-12 shadow">
-          <div id="farmWorkersHired"></div>
-          <div id="standWorkersHired"></div>
-
-          
-          <!-- <div id="farmSecurity"></div> -->
-      </div>
-      
-      <div class="col-6"><h4 class="shadow">Equipment and Infrastructure</h4>
-      <div id="farmEquipment"></div></div>
-        <footer class="container-fluid text-center py-3 hg-main">🍑 Crafted by StudeWorks 🍑
-      </footer>
+      <div class="row hg-main-darker shadow">        
+          <div class="col-3"><table id="farmWorkersHired" class="hg-sidekick-darker font-color-main-darker"></table></div>
+          <div id="standWorkersHired" class="col-3" ></div>
+          <div id="farmEquipmentBought" class="col-3"></div>   
+          <div id="standInfrastructureBought" class="col-3"></div>  
+      </div>      
+    <footer class="container-fluid text-center py-3 hg-main">🍑 Crafted by StudeWorks 🍑
+    </footer>
 
     <!--#region  Scripts-->
     <script src="app.js"></script>

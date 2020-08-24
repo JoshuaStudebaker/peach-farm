@@ -41,6 +41,64 @@ function restart() {
   standWorkersHired = [];
   farmEquipmentBought = [];
   standInfrastructureBought = [];
+
+  farmEquipment = [
+    {
+      name: "Tractor",
+      cost: 4000,
+      multiplier: 30,
+    },
+    {
+      name: "Picking Trailer",
+      cost: 800,
+      multiplier: 30,
+    },
+  ];
+
+  standInfrastructure = [
+    {
+      name: "Cooler",
+      cost: 2000,
+      betterPrice: 1,
+    },
+    {
+      name: "Ice Cream Machine",
+      cost: 1200,
+      betterPrice: 0.5,
+    },
+  ];
+
+  farmWorkers = [
+    {
+      name: "Grandad",
+      pricePerDay: 0,
+      multiplier: 3,
+    },
+    {
+      name: "Jr (Your Kid)",
+      pricePerDay: 0,
+      multiplier: 5,
+    },
+    {
+      name: "Orchard Picker",
+      pricePerDay: 60,
+      multiplier: 20,
+    },
+  ];
+
+  standWorkers = [
+    {
+      name: "Stand Manager",
+      pricePerDay: 100,
+      multiplier: 75,
+    },
+    {
+      name: "Retail Seller",
+      pricePerDay: 50,
+      multiplier: 30,
+    },
+  ];
+
   updateScreen();
   let template =
     '<button type="button" class="btn start-buttons rounded" onclick="beginHarvest()">Begin Harvest</button>';
@@ -141,8 +199,8 @@ function pick() {
   if (harvest == 1) {
     peachesPicked += farmMods;
     peachesInCooler += farmMods;
-    updateScreen();
   }
+  updateScreen();
 }
 
 function peachAutoSelling() {
@@ -196,13 +254,13 @@ function addFarmWorker(worker) {
     if (farmWorker.name == worker) {
       farmMods += farmWorker.multiplier;
       cashOut += farmWorker.pricePerDay;
-      farmWorkers.splice(i, 1);
+      if (farmWorker.name != "Orchard Picker") {
+        farmWorkers.splice(i, 1);
+      }
       farmWorkersHired.push(farmWorker);
-      drawFarmWorkers();
-      drawFarmWorkersHired();
-      drawHarvestBoost();
     }
   }
+  updateScreen();
 }
 
 function addStandWorker(worker) {
@@ -213,9 +271,6 @@ function addStandWorker(worker) {
       cashOut += standWorker.pricePerDay;
       standWorkers.splice(i, 1);
       standWorkersHired.push(standWorker);
-      drawStandWorkers();
-      drawStandWorkersHired();
-      drawRetailBoost();
     }
   }
 }
@@ -228,10 +283,8 @@ function addFarmEquipment(implement) {
       cash -= equipment.cost;
       equipment.multiplier = Math.floor(equipment.multiplier * 1.25);
       equipment.cost = Math.floor(equipment.cost * 1.2);
-      drawFarmEquipment();
     }
   }
-  drawHarvestBoost();
   updateScreen();
 }
 
@@ -244,11 +297,17 @@ function addStandInfrastructure(implement) {
       purchase.multiplier = Math.floor(purchase.betterPrice * 1.25);
       purchase.cost = Math.floor(purchase.cost * 1.2);
       pricePerPound += purchase.betterPrice;
-      drawStandInfrastructure();
     }
   }
-  drawRetailBoost();
   updateScreen();
+}
+
+function drawHarvestBoost() {
+  harvestBoostDisplay.innerHTML = "Harvest Boost+ " + farmMods.toString();
+}
+
+function drawRetailBoost() {
+  retailBoostDisplay.innerHTML = "Retail Boost+ " + standMods.toString();
 }
 
 function updateScreen() {
@@ -262,17 +321,17 @@ function updateScreen() {
   peachesSoldDisplay.innerHTML = "Peaches Sold: " + peachesSold.toString();
   pricePerPoundDisplay.innerHTML =
     "Price per Pound: $" + pricePerPound_Currency.toString();
+  drawFarmEquipment();
+  drawStandInfrastructure();
+  drawFarmWorkers();
+  drawFarmWorkersHired();
+  drawHarvestBoost();
+  drawRetailBoost();
+  drawStandWorkers();
+  drawStandWorkersHired();
 }
 
 // #region Draw Items:
-
-function drawHarvestBoost() {
-  harvestBoostDisplay.innerHTML = "Harvest Boost+ " + farmMods.toString();
-}
-
-function drawRetailBoost() {
-  retailBoostDisplay.innerHTML = "Retail Boost+ " + standMods.toString();
-}
 
 // Farm Worker Draw
 function drawFarmWorkers() {
@@ -341,9 +400,17 @@ function drawFarmWorkersHired() {
 
 function getFarmWorkersHiredTemplate(item) {
   return /*html*/ `
-  <div class="border-for-card"><p class="mb-0 pl-1"><u>
-  ${item.name}</u>: $${item.pricePerDay}/day, Productivity: ${item.multiplier}<button type="button" class="btn" onclick="fireFarmWorker('${item.name}')")>Fire</button></p>
-  </div>
+ <tr>
+  <td>
+  ${item.name}:
+  </td>
+  <td class="pr-1">
+  $${item.pricePerDay}/day
+  </td>
+  <td class="text-center pr-1">
+  +${item.multiplier}
+  </td>
+  </tr>  
   `;
 }
 
@@ -417,23 +484,7 @@ function getStandInfrastructureTemplate(item) {
         `;
 }
 
-// Farm Security Draw
-function drawFarmSecurity() {
-  let template = "";
-  farmSecurity.forEach((item) => {
-    template += getFarmSecurityTemplate(item);
-  });
-
-  farmSecurityDisplay.innerHTML = template;
-}
-
-function getFarmSecurityTemplate(item) {
-  return /*html*/ `
-  <div class="border-for-card"><p> onclick="addFarmSecurity('${item.name}')">
-  ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
-  </p></div>
-  `;
-}
+//
 // //#endregion
 
 // #region All the Runners
@@ -447,25 +498,41 @@ cashInterval();
 // #endregion
 
 // Farm Items
-let farmSecurity = [
-  {
-    name: "Ruskle the Farmdog",
-    cost: 400,
-    multiplier: 1,
-    critterDamage: 100,
-    requirement: 0,
-    adds: 1,
-  },
-  {
-    name: "Deputy Barkaroo",
-    cost: 300,
-    multiplier: 1,
-    critterDamage: 80,
-    requirement: 1,
-    adds: 1,
-  },
-];
+// let farmSecurity = [
+//   {
+//     name: "Ruskle the Farmdog",
+//     cost: 400,
+//     multiplier: 1,
+//     critterDamage: 100,
+//     requirement: 0,
+//     adds: 1,
+//   },
+//   {
+//     name: "Deputy Barkaroo",
+//     cost: 300,
+//     multiplier: 1,
+//     critterDamage: 80,
+//     requirement: 1,
+//     adds: 1,
+//   },
+// ];
+// Farm Security Draw
+// function drawFarmSecurity() {
+//   let template = "";
+//   farmSecurity.forEach((item) => {
+//     template += getFarmSecurityTemplate(item);
+//   });
 
+//   farmSecurityDisplay.innerHTML = template;
+// }
+
+// function getFarmSecurityTemplate(item) {
+//   return /*html*/ `
+//   <div class="border-for-card"><p> onclick="addFarmSecurity('${item.name}')">
+//   ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
+//   </p></div>
+//   `;
+// }
 //
 //
 // //#region Possible Expansion

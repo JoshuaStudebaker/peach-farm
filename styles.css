@@ -60,3 +60,7 @@ tr {
 .hg-sidekick-darker {
   background-color: var(--hue-sidekick-darker);
 }
+
+.font-color-main-darker {
+  color: var(--hue-main-darker);
+}
