@@ -292,11 +292,10 @@ function addStandInfrastructure(implement) {
   for (let i = 0; i < standInfrastructure.length; i++) {
     let purchase = standInfrastructure[i];
     if (purchase.name == implement && purchase.cost <= cash) {
-      farmMods += purchase.multiplier;
       cash -= purchase.cost;
-      purchase.multiplier = Math.floor(purchase.betterPrice * 1.25);
-      purchase.cost = Math.floor(purchase.cost * 1.2);
       pricePerPound += purchase.betterPrice;
+      purchase.betterPrice = Math.floor(purchase.betterPrice * 1.25);
+      purchase.cost = Math.floor(purchase.cost * 1.2);
     }
   }
   updateScreen();
@@ -425,9 +424,17 @@ function drawStandWorkersHired() {
 
 function getStandWorkersHiredTemplate(item) {
   return /*html*/ `
-  <div class="border-for-card"><p class="mb-0 pl-1"><u>
-  ${item.name}</u>: $${item.pricePerDay}/day, Productivity: ${item.multiplier}<button type="button" class="btn" onclick="fireStandWorker('${item.name}')")>Fire</button></p>
-  </div>
+  <tr>
+  <td>
+  ${item.name}:
+  </td>
+  <td class="pr-1">
+  $${item.pricePerDay}/day
+  </td>
+  <td class="text-center pr-1">
+  ${item.multiplier}
+  </td>
+  </tr>  
   `;
 }
 
@@ -451,11 +458,11 @@ function getFarmEquipmentTemplate(item) {
   <td class="pr-1">
   $${item.cost}
   </td>
-        <td class="text-center pr-1">
-        ${item.multiplier}
-        </td>
-        </tr>  
-        `;
+  <td class="text-center pr-1">
+  ${item.multiplier}
+  </td>
+  </tr>  
+  `;
 }
 
 function drawStandInfrastructure() {
