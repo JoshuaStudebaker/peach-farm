@@ -279,6 +279,7 @@ function addStandWorker(worker) {
       standWorkersHired.push(standWorker);
     }
   }
+  updateScreen();
 }
 
 function addFarmEquipment(implement) {
@@ -290,9 +291,9 @@ function addFarmEquipment(implement) {
       farmEquipmentBought.push(equipment);
       equipment.multiplier = Math.floor(equipment.multiplier * 1.25);
       equipment.cost = Math.floor(equipment.cost * 1.2);
+      updateScreen();
     }
   }
-  updateScreen();
 }
 
 function addStandInfrastructure(implement) {
@@ -304,9 +305,9 @@ function addStandInfrastructure(implement) {
       standInfrastructureBought.push(purchase);
       purchase.betterPrice = Math.floor(purchase.betterPrice * 1.25);
       purchase.cost = Math.floor(purchase.cost * 1.2);
+      updateScreen();
     }
   }
-  updateScreen();
 }
 
 function drawHarvestBoost() {
