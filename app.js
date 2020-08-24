@@ -408,7 +408,7 @@ function getFarmWorkersHiredTemplate(item) {
   $${item.pricePerDay}/day
   </td>
   <td class="text-center pr-1">
-  +${item.multiplier}
+  ${item.multiplier}
   </td>
   </tr>  
   `;
