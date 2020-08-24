@@ -17,7 +17,38 @@ let farmEquipmentBought = [];
 let standInfrastructureBought = [];
 // #endregion
 
-// #region Displays
+// #region Start and Restart
+function beginHarvest() {
+  harvest = 1;
+  let template = "";
+  harvestDisplay.innerHTML = template;
+}
+
+function restart() {
+  harvest = 0;
+  peachesPicked = 0;
+  peachesInCooler = 0;
+  peachesSold = 0;
+  pricePerPound = 0.5;
+  cash = 0;
+  farmMods = 1;
+  standMods = 0;
+  cashOut = 0;
+  cashInAuto = 0;
+  // cashInButton = 0;
+  dailyRetail = cashInAuto;
+  farmWorkersHired = [];
+  standWorkersHired = [];
+  farmEquipmentBought = [];
+  standInfrastructureBought = [];
+  updateScreen();
+  let template =
+    '<button type="button" class="btn start-buttons rounded" onclick="beginHarvest()">Begin Harvest</button>';
+  harvestDisplay.innerHTML = template;
+}
+// #endregion
+
+// #region Display Items
 let peachesDisplay = document.getElementById("peach-count");
 let cashDisplay = document.getElementById("cash");
 let farmWorkersDisplay = document.getElementById("farmWorkers");
@@ -69,15 +100,15 @@ let farmWorkers = [
   {
     name: "Grandad",
     pricePerDay: 0,
-    multiplier: 5,
+    multiplier: 3,
   },
   {
     name: "Jr (Your Kid)",
     pricePerDay: 0,
-    multiplier: 8,
+    multiplier: 5,
   },
   {
-    name: "Johnny McCandoegh",
+    name: "Orchard Picker",
     pricePerDay: 60,
     multiplier: 20,
   },
@@ -95,47 +126,17 @@ let standWorkers = [
     multiplier: 30,
   },
 ];
+// #endregion
 
-// Intervals
-
+// #region Intervals
 function cashInterval() {
-  let whatever = setInterval(cashDaily, 2000);
+  setInterval(cashDaily, 2000);
   updateScreen();
-  cashInButton = 0;
+  // cashInButton = 0;
 }
+// #endregion
 
-// Game
-
-function beginHarvest() {
-  harvest = 1;
-  let template = "";
-
-  // '<button type="button" class="btn start-buttons-faded rounded" onclick="beginHarvest()">Begin Harvest</button >';
-  harvestDisplay.innerHTML = template;
-}
-
-function restart() {
-  harvest = 0;
-  peachesPicked = 0;
-  peachesInCooler = 0;
-  peachesSold = 0;
-  pricePerPound = 0.5;
-  cash = 0;
-  farmMods = 1;
-  standMods = 0;
-  cashOut = 0;
-  cashInAuto = 0;
-  cashInButton = 0;
-  dailyRetail = cashInAuto;
-  farmWorkersHired = [];
-  standWorkersHired = [];
-  farmEquipmentBought = [];
-  standInfrastructureBought = [];
-  updateScreen();
-  let template =
-    '<button type="button" class="btn start-buttons rounded" onclick="beginHarvest()">Begin Harvest</button>';
-  harvestDisplay.innerHTML = template;
-}
+// #region Buttons and Cash Flow
 function pick() {
   if (harvest == 1) {
     peachesPicked += farmMods;
@@ -150,7 +151,7 @@ function peachAutoSelling() {
     peachesSold += standMods;
     cashInAuto = 24 * standMods * pricePerPound;
     cash += cashInAuto;
-  } else if (peachesInCooler > 0) {
+  } else if (peachesInCooler > 0 && standMods > 0) {
     peachesSold += peachesInCooler;
     cashInAuto = 24 * peachesInCooler * pricePerPound;
     cash += cashInAuto;
@@ -162,7 +163,7 @@ function peachAutoSelling() {
 function sell() {
   if (harvest == 1) {
     if (peachesInCooler > 0) {
-      cashInButton = cashInButton + 24 * pricePerPound;
+      let cashInButton = 24 * pricePerPound;
       cash += cashInButton;
       peachesSold++;
       peachesInCooler--;
@@ -172,7 +173,7 @@ function sell() {
 }
 
 function drawDailyRetail() {
-  dailyRetail = cashInButton + cashInAuto;
+  dailyRetail = cashInAuto;
   updateScreen();
 }
 
@@ -182,7 +183,7 @@ function cashOutflow() {
 }
 
 function cashDaily() {
-  sell();
+  // sell();
   peachAutoSelling();
   drawDailyRetail();
   cashOutflow();
@@ -240,8 +241,9 @@ function addStandInfrastructure(implement) {
     if (purchase.name == implement && purchase.cost <= cash) {
       farmMods += purchase.multiplier;
       cash -= purchase.cost;
-      purchase.multiplier = Math.floor(purchase.multiplier * 1.25);
+      purchase.multiplier = Math.floor(purchase.betterPrice * 1.25);
       purchase.cost = Math.floor(purchase.cost * 1.2);
+      pricePerPound += purchase.betterPrice;
       drawStandInfrastructure();
     }
   }
@@ -409,7 +411,7 @@ function getStandInfrastructureTemplate(item) {
   $${item.cost}
   </td>
   <td class="text-center pr-1">
-        + $${item.multiplier}/lb
+        Adds $${item.betterPrice}/lb
         </td>
         </tr>  
         `;
