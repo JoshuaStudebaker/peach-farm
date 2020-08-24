@@ -288,7 +288,7 @@ function addFarmEquipment(implement) {
     if (equipment.name == implement && equipment.cost <= cash) {
       farmMods += equipment.multiplier;
       cash -= equipment.cost;
-      farmEquipmentBought.push(equipment);
+      farmEquipmentBought.push({ ...equipment });
       equipment.multiplier = Math.floor(equipment.multiplier * 1.25);
       equipment.cost = Math.floor(equipment.cost * 1.2);
       updateScreen();
@@ -302,7 +302,7 @@ function addStandInfrastructure(implement) {
     if (purchase.name == implement && purchase.cost <= cash) {
       cash -= purchase.cost;
       pricePerPound += purchase.betterPrice;
-      standInfrastructureBought.push(purchase);
+      standInfrastructureBought.push({ ...purchase });
       purchase.betterPrice = Math.floor(purchase.betterPrice * 1.25);
       purchase.cost = Math.floor(purchase.cost * 1.2);
       updateScreen();
