@@ -1,126 +1,24 @@
-// Starting Variables
+// #region Starting Variables
+let harvest = 0;
 let peachesPicked = 0;
 let peachesInCooler = 0;
 let peachesSold = 0;
-let pricePerPound_1s = 4;
-let pricePerPound_Wholesale = 1.5;
-let cash = 10000;
-let daysLeft_Summer = 100;
+let pricePerPound = 0.5;
+let cash = 0;
 let farmMods = 1;
-let standMods = 1;
+let standMods = 0;
 let cashOut = 0;
-let cashIn = 0;
+let cashInAuto = 0;
+let cashInButton = 0;
+let dailyRetail = cashInAuto;
 let farmWorkersHired = [];
 let standWorkersHired = [];
+let farmEquipmentBought = [];
+let standInfrastructureBought = [];
+// #endregion
 
-// Farm Items
-let farmSecurity = [
-  {
-    name: "Ruskle the Farmdog",
-    cost: 400,
-    multiplier: 1,
-    critterDamage: 100,
-    requirement: 0,
-    adds: 1,
-  },
-  {
-    name: "Deputy Barkaroo",
-    cost: 300,
-    multiplier: 1,
-    critterDamage: 80,
-    requirement: 1,
-    adds: 1,
-  },
-];
-
-let farmEquipment = [
-  {
-    name: "The Old Tractor that Could",
-    cost: 4000,
-    multiplier: 30,
-    bugDamage: 0,
-    critterDamage: 0,
-    requirement: 0,
-    adds: 10,
-  },
-  {
-    name: "The Hopefully-Not-Too-Leaky Sprayer",
-    cost: 1000,
-    multiplier: 0,
-    bugDamage: 50,
-    critterDamage: 0,
-    requirement: 10,
-    adds: 3,
-  },
-  {
-    name: "Picking Trailer",
-    cost: 800,
-    multiplier: 30,
-    bugDamage: 0,
-    requirement: 10,
-    adds: 4,
-  },
-];
-
-let standInfrastructure = [{}];
-
-let farmWorkers = [
-  {
-    name: "Grandad",
-    pricePerDay: 0,
-    multiplier: 5,
-    experience: 0,
-  },
-  {
-    name: "Toots and Boots",
-    pricePerDay: 0,
-    multiplier: 10,
-    experience: 0,
-  },
-  {
-    name: "Space Case",
-    pricePerDay: 60,
-    multiplier: 5,
-    experience: 0,
-  },
-  {
-    name: "Mrs. Olott",
-    pricePerDay: 70,
-    multiplier: 7,
-    experience: 0,
-  },
-  {
-    name: "Noah Schoow",
-    pricePerDay: 50,
-    multiplier: 4,
-    experience: 0,
-  },
-];
-
-let standWorkers = [
-  {
-    name: "Stand Manager",
-    pricePerDay: 0,
-    multiplier: 5,
-    experience: 0,
-  },
-  {
-    name: "Retail Seller",
-    pricePerDay: 75,
-    multiplier: 10,
-    experience: 0,
-  },
-  {
-    name: "Boxer",
-    pricePerDay: 80,
-    multiplier: 15,
-    experience: 0,
-  },
-];
-
-// Display IDs
-let bushelsDisplay = document.getElementById("bushel-count");
-let daysLeftDisplay = document.getElementById("days-left");
+// #region Displays
+let peachesDisplay = document.getElementById("peach-count");
 let cashDisplay = document.getElementById("cash");
 let farmWorkersDisplay = document.getElementById("farmWorkers");
 let standWorkersDisplay = document.getElementById("standWorkers");
@@ -129,81 +27,166 @@ let farmSecurityDisplay = document.getElementById("farmSecurity");
 let farmWorkersHiredDisplay = document.getElementById("farmWorkersHired");
 let standWorkersHiredDisplay = document.getElementById("standWorkersHired");
 let farmNameDisplay = document.getElementById("famName");
-let bushelsSoldDisplay = document.getElementById("bushels-sold");
-let bushelsInStorageDisplay = document.getElementById("bushels-in-storage");
+let peachesSoldDisplay = document.getElementById("peaches-sold");
+let peachesInStorageDisplay = document.getElementById("peaches-in-storage");
 let cashOutDisplay = document.getElementById("cash-out");
-let cashInDisplay = document.getElementById("cash-in");
+let cashInDisplay = document.getElementById("cash-in-daily");
+let pricePerPoundDisplay = document.getElementById("price-per-pound");
+let standInfrastructureDisplay = document.getElementById("standInfrastructure");
+let harvestBoostDisplay = document.getElementById("harvest-boost");
+let retailBoostDisplay = document.getElementById("retail-boost");
+let harvestDisplay = document.getElementById("harvest");
+// #endregion
+
+// #region Items + Workers;
+let farmEquipment = [
+  {
+    name: "Tractor",
+    cost: 4000,
+    multiplier: 30,
+  },
+  {
+    name: "Picking Trailer",
+    cost: 800,
+    multiplier: 30,
+  },
+];
+
+let standInfrastructure = [
+  {
+    name: "Cooler",
+    cost: 2000,
+    betterPrice: 1,
+  },
+  {
+    name: "Ice Cream Machine",
+    cost: 1200,
+    betterPrice: 0.5,
+  },
+];
+
+let farmWorkers = [
+  {
+    name: "Grandad",
+    pricePerDay: 0,
+    multiplier: 5,
+  },
+  {
+    name: "Jr (Your Kid)",
+    pricePerDay: 0,
+    multiplier: 8,
+  },
+  {
+    name: "Johnny McCandoegh",
+    pricePerDay: 60,
+    multiplier: 20,
+  },
+];
+
+let standWorkers = [
+  {
+    name: "Stand Manager",
+    pricePerDay: 100,
+    multiplier: 75,
+  },
+  {
+    name: "Retail Seller",
+    pricePerDay: 50,
+    multiplier: 30,
+  },
+];
 
 // Intervals
-function dayCountSummer() {
-  if (daysLeft_Summer > 0) {
-    daysLeft_Summer--;
-  } else {
-    daysLeft_Summer = 0;
+
+function cashInterval() {
+  let whatever = setInterval(cashDaily, 2000);
+  updateScreen();
+  cashInButton = 0;
+}
+
+// Game
+
+function beginHarvest() {
+  harvest = 1;
+  let template = "";
+
+  // '<button type="button" class="btn start-buttons-faded rounded" onclick="beginHarvest()">Begin Harvest</button >';
+  harvestDisplay.innerHTML = template;
+}
+
+function restart() {
+  harvest = 0;
+  peachesPicked = 0;
+  peachesInCooler = 0;
+  peachesSold = 0;
+  pricePerPound = 0.5;
+  cash = 0;
+  farmMods = 1;
+  standMods = 0;
+  cashOut = 0;
+  cashInAuto = 0;
+  cashInButton = 0;
+  dailyRetail = cashInAuto;
+  farmWorkersHired = [];
+  standWorkersHired = [];
+  farmEquipmentBought = [];
+  standInfrastructureBought = [];
+  updateScreen();
+  let template =
+    '<button type="button" class="btn start-buttons rounded" onclick="beginHarvest()">Begin Harvest</button>';
+  harvestDisplay.innerHTML = template;
+}
+function pick() {
+  if (harvest == 1) {
+    peachesPicked += farmMods;
+    peachesInCooler += farmMods;
+    updateScreen();
+  }
+}
+
+function peachAutoSelling() {
+  if (peachesInCooler >= standMods) {
+    peachesInCooler -= standMods;
+    peachesSold += standMods;
+    cashInAuto = 24 * standMods * pricePerPound;
+    cash += cashInAuto;
+  } else if (peachesInCooler > 0) {
+    peachesSold += peachesInCooler;
+    cashInAuto = 24 * peachesInCooler * pricePerPound;
+    cash += cashInAuto;
+    peachesInCooler = 0;
   }
   updateScreen();
 }
 
-function daysLeftSummer() {
-  setInterval(dayCountSummer, 2000);
-}
-
-function pause() {
-  clearInterval(daysLeft_Summer);
-}
-
-function cashInterval() {
-  let cash = setInterval(cashInAndOut, 2000);
-}
-
-// Game
-function peachSelling() {
-  if (peachesInCooler > 0) {
-    peachesInCooler -= standMods;
-    peachesSold = standMods;
-    cashIn = peachesSold * pricePerPound_1s;
-    cash += cashIn;
+function sell() {
+  if (harvest == 1) {
+    if (peachesInCooler > 0) {
+      cashInButton = cashInButton + 24 * pricePerPound;
+      cash += cashInButton;
+      peachesSold++;
+      peachesInCooler--;
+    }
   }
+  updateScreen();
+}
+
+function drawDailyRetail() {
+  dailyRetail = cashInButton + cashInAuto;
   updateScreen();
 }
 
 function cashOutflow() {
-  if (cash > 0) {
-    cash -= cashOut;
-  }
+  cash -= cashOut;
+  updateScreen();
 }
 
-function cashInAndOut() {
-  peachSelling();
+function cashDaily() {
+  sell();
+  peachAutoSelling();
+  drawDailyRetail();
   cashOutflow();
-}
-
-function fireFarmWorker(worker) {
-  for (let i = 0; i < farmWorkersHired.length; i++) {
-    let farmWorkerFired = farmWorkersHired[i];
-    if (farmWorkerFired.name == worker) {
-      farmMods -= farmWorkerFired.multiplier;
-      cashOut -= farmWorkerFired.pricePerDay;
-      farmWorkersHired.splice(i, 1);
-      farmWorkers.push(farmWorkerFired);
-      drawFarmWorkers();
-      drawFarmWorkersHired();
-    }
-  }
-}
-
-function fireStandWorker(worker) {
-  for (let i = 0; i < standWorkersHired.length; i++) {
-    let standWorkerFired = standWorkersHired[i];
-    if (standWorkerFired.name == worker) {
-      standMods -= standWorkerFired.multiplier;
-      cashOut -= standWorkerFired.pricePerDay;
-      standWorkersHired.splice(i, 1);
-      standWorkers.push(standWorkerFired);
-      drawStandWorkers();
-      drawStandWorkersHired();
-    }
-  }
+  updateScreen();
 }
 
 function addFarmWorker(worker) {
@@ -216,6 +199,7 @@ function addFarmWorker(worker) {
       farmWorkersHired.push(farmWorker);
       drawFarmWorkers();
       drawFarmWorkersHired();
+      drawHarvestBoost();
     }
   }
 }
@@ -230,37 +214,68 @@ function addStandWorker(worker) {
       standWorkersHired.push(standWorker);
       drawStandWorkers();
       drawStandWorkersHired();
+      drawRetailBoost();
     }
   }
 }
 
-function pick() {
-  if (daysLeft_Summer < 100) {
-    peachesPicked += farmMods;
-    peachesInCooler += farmMods;
-    // bushelsPicked = Math.ceil(peachesPicked / 4);
+function addFarmEquipment(implement) {
+  for (let i = 0; i < farmEquipment.length; i++) {
+    let equipment = farmEquipment[i];
+    if (equipment.name == implement && equipment.cost <= cash) {
+      farmMods += equipment.multiplier;
+      cash -= equipment.cost;
+      equipment.multiplier = Math.floor(equipment.multiplier * 1.25);
+      equipment.cost = Math.floor(equipment.cost * 1.2);
+      drawFarmEquipment();
+    }
   }
+  drawHarvestBoost();
+  updateScreen();
+}
 
+function addStandInfrastructure(implement) {
+  for (let i = 0; i < standInfrastructure.length; i++) {
+    let purchase = standInfrastructure[i];
+    if (purchase.name == implement && purchase.cost <= cash) {
+      farmMods += purchase.multiplier;
+      cash -= purchase.cost;
+      purchase.multiplier = Math.floor(purchase.multiplier * 1.25);
+      purchase.cost = Math.floor(purchase.cost * 1.2);
+      drawStandInfrastructure();
+    }
+  }
+  drawRetailBoost();
   updateScreen();
 }
 
 function updateScreen() {
-  bushelsDisplay.innerHTML = "Peaches Picked: " + peachesPicked.toString();
-  daysLeftDisplay.innerHTML = "Days Left: " + daysLeft_Summer.toString();
+  let pricePerPound_Currency = pricePerPound.toFixed(2);
+  peachesDisplay.innerHTML = "Peaches Picked: " + peachesPicked.toString();
   cashDisplay.innerHTML = "Cash: $" + cash.toString();
-  cashInDisplay.innerHTML = "Inflow: $" + cashIn.toString();
+  cashInDisplay.innerHTML = "Daily Retail: $" + dailyRetail.toString();
   cashOutDisplay.innerHTML = "Wage Load: $" + cashOut.toString();
-  bushelsInStorageDisplay.innerHTML =
+  peachesInStorageDisplay.innerHTML =
     "Peaches in Cooler: " + peachesInCooler.toString();
-  bushelsSoldDisplay.innerHTML = "Peaches Sold: " + peachesSold.toString();
+  peachesSoldDisplay.innerHTML = "Peaches Sold: " + peachesSold.toString();
+  pricePerPoundDisplay.innerHTML =
+    "Price per Pound: $" + pricePerPound_Currency.toString();
 }
 
 // #region Draw Items:
-//
+
+function drawHarvestBoost() {
+  harvestBoostDisplay.innerHTML = "Harvest Boost+ " + farmMods.toString();
+}
+
+function drawRetailBoost() {
+  retailBoostDisplay.innerHTML = "Retail Boost+ " + standMods.toString();
+}
+
 // Farm Worker Draw
 function drawFarmWorkers() {
   let template =
-    "<tr><td>Name:</td><td class='pr-1'>Wage:</td><td class='pr-1'>Productivity:</td></tr>";
+    "<tr><td>Name:</td><td class='pr-1'>Wage:</td><td class='pr-1 text-center'>Harvest Boost+</td></tr>";
   farmWorkers.forEach((item) => {
     template += getFarmWorkerTemplate(item);
   });
@@ -268,34 +283,27 @@ function drawFarmWorkers() {
   farmWorkersDisplay.innerHTML = template;
 }
 
-// function getFarmWorkerTemplate2(item) {
-//   return /*html*/ `
-//   <div class="border-for-card" type="button" onclick="addFarmWorker('${item.name}')"><p class="mb-0 pl-1"><u>
-//   ${item.name}</u>:</p><p class="mb-0 text-right pr-1">$${item.pricePerDay}/day, Productivity: ${item.multiplier}</p>
-//   </div>
-//   `;
-// }
 //
 function getFarmWorkerTemplate(item) {
   return /*html*/ `    
-    <tr>
-      <td>
-        <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addFarmWorker('${item.name}')">${item.name}:</button>
-      </td>
-      <td class="pr-1">
-        $${item.pricePerDay}/day
-      </td>
-      <td class="text-center pr-1">
-        ${item.multiplier}
-      </td>
-    </tr>  
+  <tr>
+  <td>
+  <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addFarmWorker('${item.name}')">${item.name}:</button>
+  </td>
+  <td class="pr-1">
+  $${item.pricePerDay}/day
+  </td>
+  <td class="text-center pr-1">
+  ${item.multiplier}
+  </td>
+  </tr>  
   `;
 }
 
 // Stand Worker Draw
 function drawStandWorkers() {
   let template =
-    "<tr><td>Name:</td><td class='pr-1'>Wage:</td><td class='pr-1'>Retail Boost+</td></tr>";
+    "<tr><td>Name:</td><td class='pr-1'>Wage:</td><td class='pr-1 text-center'>Retail Boost+</td></tr>";
   standWorkers.forEach((item) => {
     template += getStandWorkerTemplate(item);
   });
@@ -305,17 +313,17 @@ function drawStandWorkers() {
 
 function getStandWorkerTemplate(item) {
   return /*html*/ `    
-    <tr>
-      <td>
-        <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addStandWorker('${item.name}')">${item.name}:</button>
-      </td>
-      <td class="pr-1">
-        $${item.pricePerDay}/day
-      </td>
-      <td class="text-center pr-1">
-        ${item.multiplier}
-      </td>
-    </tr>  
+  <tr>
+  <td>
+  <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addStandWorker('${item.name}')">${item.name}:</button>
+  </td>
+  <td class="pr-1">
+  $${item.pricePerDay}/day
+  </td>
+  <td class="text-center pr-1">
+  ${item.multiplier}
+  </td>
+  </tr>  
   `;
 }
 
@@ -356,7 +364,8 @@ function getStandWorkersHiredTemplate(item) {
 
 // Farm Equipment Draw
 function drawFarmEquipment() {
-  let template = "";
+  let template =
+    "<tr><td>Name:</td><td class='pr-1'>Cost:</td><td class='pr-1 text-center'>Harvest Boost+</td></tr>";
   farmEquipment.forEach((item) => {
     template += getFarmEquipmentTemplate(item);
   });
@@ -366,10 +375,44 @@ function drawFarmEquipment() {
 
 function getFarmEquipmentTemplate(item) {
   return /*html*/ `
-  <div class="border-for-card"><p> onclick="addFarmEquipment('${item.name}')">
-  ${item.name}: Cost: ${item.cost} Productivity: ${item.multiplier}
-  </p></div>
-  `;
+  <tr>
+  <td>
+  <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addFarmEquipment('${item.name}')">${item.name}:</button>
+  </td>
+  <td class="pr-1">
+  $${item.cost}
+  </td>
+        <td class="text-center pr-1">
+        ${item.multiplier}
+        </td>
+        </tr>  
+        `;
+}
+
+function drawStandInfrastructure() {
+  let template =
+    "<tr><td>Name:</td><td class='pr-1'>Cost:</td><td class='pr-1 text-center'>Price Boost+</td></tr>";
+  standInfrastructure.forEach((item) => {
+    template += getStandInfrastructureTemplate(item);
+  });
+
+  standInfrastructureDisplay.innerHTML = template;
+}
+
+function getStandInfrastructureTemplate(item) {
+  return /*html*/ `
+  <tr>
+  <td>
+  <button type="button" class="dropdown-item pt-0 pb-0 pl-0 pr-1" href="" onclick="addStandInfrastructure('${item.name}')">${item.name}:</button>
+  </td>
+  <td class="pr-1">
+  $${item.cost}
+  </td>
+  <td class="text-center pr-1">
+        + $${item.multiplier}/lb
+        </td>
+        </tr>  
+        `;
 }
 
 // Farm Security Draw
@@ -395,12 +438,52 @@ function getFarmSecurityTemplate(item) {
 drawFarmWorkers();
 drawStandWorkers();
 drawFarmEquipment();
-drawFarmSecurity();
+drawStandInfrastructure();
 cashInterval();
+// drawFarmSecurity();
 
 // #endregion
 
+// Farm Items
+let farmSecurity = [
+  {
+    name: "Ruskle the Farmdog",
+    cost: 400,
+    multiplier: 1,
+    critterDamage: 100,
+    requirement: 0,
+    adds: 1,
+  },
+  {
+    name: "Deputy Barkaroo",
+    cost: 300,
+    multiplier: 1,
+    critterDamage: 80,
+    requirement: 1,
+    adds: 1,
+  },
+];
+
+//
+//
 // //#region Possible Expansion
+
+// function dayCountSummer() {
+//   if (daysLeft_Summer > 0) {
+//     daysLeft_Summer--;
+//   } else {
+//     daysLeft_Summer = 0;
+//   }
+//   updateScreen();
+// }
+
+// function daysLeftSummer() {
+//   setInterval(dayCountSummer, 2000);
+// }
+
+// function pause() {
+//   clearInterval(daysLeft_Summer);
+// }
 
 // function drawPruningItems() {
 //   let template = "";
@@ -414,7 +497,7 @@ cashInterval();
 // function getPruningItemsTemplate(item) {
 //   return /*html*/ `
 //   <button onclick="addPruningItems('${item.name}')">
-//     ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
+//     ${item.name}: Cost: ${item.price} Efficiency Boost: ${item.multiplier}
 //   </button
 //   `;
 // }
@@ -434,8 +517,8 @@ cashInterval();
 
 // function getThinningItemsTemplate(item) {
 //   return /*html*/ `
-//   <button onclick="addthinningItems('${item.name}')">
-//     ${item.name}: Cost: ${item.price} Efficiency Bost: ${item.multiplier}
+//   <button onclick="addThinningItems('${item.name}')">
+//     ${item.name}: Cost: ${item.price} Efficiency Boost: ${item.multiplier}
 //   </button>
 //   `;
 // }
@@ -491,3 +574,31 @@ cashInterval();
 //   },
 // ];
 // //#endregion
+
+// function fireFarmWorker(worker) {
+//   for (let i = 0; i < farmWorkersHired.length; i++) {
+//     let farmWorkerFired = farmWorkersHired[i];
+//     if (farmWorkerFired.name == worker) {
+//       farmMods -= farmWorkerFired.multiplier;
+//       cashOut -= farmWorkerFired.pricePerDay;
+//       farmWorkersHired.splice(i, 1);
+//       farmWorkers.push(farmWorkerFired);
+//       drawFarmWorkers();
+//       drawFarmWorkersHired();
+//     }
+//   }
+// }
+
+// function fireStandWorker(worker) {
+//   for (let i = 0; i < standWorkersHired.length; i++) {
+//     let standWorkerFired = standWorkersHired[i];
+//     if (standWorkerFired.name == worker) {
+//       standMods -= standWorkerFired.multiplier;
+//       cashOut -= standWorkerFired.pricePerDay;
+//       standWorkersHired.splice(i, 1);
+//       standWorkers.push(standWorkerFired);
+//       drawStandWorkers();
+//       drawStandWorkersHired();
+//     }
+//   }
+// }

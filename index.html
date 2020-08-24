@@ -20,28 +20,32 @@
     </header>
     <main class="container-fluid flex-grow-1">
       <div class="row text-center py-2 border-y-light hg-sidekick-darker">
-      <div class="col-6 text center">
-          <button type="button" class="btn start-buttons rounded" onclick="daysLeftSummer()">
+      <div id="harvest" class="col-6 text center">
+          <button type="button" class="btn start-buttons rounded" onclick="beginHarvest()">
             Begin Harvest
           </button>
-        </div><div class="col-6 text center">
+        </div>
+        <div class="col-6 text center">
           <button type="button" class="btn start-buttons rounded" onclick="restart()">
             Restart
           </button>
-        </div>
-        
+        </div>        
       </div>
       <div class="row hg-main mt-1">
         <div class="col-4"> 
-          <p id="bushel-count" class="my-0">Peaches Picked:</p>
-          <p id="bushels-sold"class="my-0" >Peaches Sold:</p>
-          <p id="bushels-in-storage" class="my-0">Peaches in Cooler:</p>
+          <p id="peach-count" class="my-0">Peaches Picked:</p>
+          <p id="peaches-sold"class="my-0" >Peaches Sold:</p>
+          <p id="peaches-in-storage" class="my-0">Peaches in Cooler:</p>
         </div>
-        <div class="col-4"><p id="days-left">Days Left:</p></div>
+        <div class="col-4">          
+          <p id="price-per-pound" class="my-0">Price per Pound: $0.50/lb</p>
+          <p id="harvest-boost" class="my-0">Harvest Boost+</p>
+          <p id="retail-boost" class="my-0">Retail Boost+</p>
+        </div>        
         <div class="col-4">
           <p id="cash" class="my-0" >Cash:</p>
-          <p id="cash-in" class="my-0">Inflow:</p>
-          <p id="cash-out" class="my-0" >Outflow:</p>
+          <p id="cash-in-daily" class="my-0">Daily Retail:</p>
+          <p id="cash-out" class="my-0" >Wage Load:</p>
         </div>
       </div>
       <div class="row text-center my-3">
@@ -55,11 +59,12 @@
           </div>          
          </div>
         <div class="col-md-4 d-flex justify-content-center">
-          <div class="card shadow border-for-card p-1 hg-snow" onclick="sell()" style="width: 18rem;">
+          <div type="button" class="card shadow border-for-card p-1 hg-snow" onclick="sell()" style="width: 18rem;">
             <img class="card-img-top shadow" src="peaches-for-sale.jpg" alt="Card image cap">
             <div class="card-body">
-              <p class="card-text rounded hg-snow shadow">Meanwhile at the Peach Stand...
+              <p class="card-text rounded hg-snow shadow">Meanwhile at the Peach Stand...<br/>(Hint: Hire folks for your stand, so you can concentrate on the harvest)
               </p>
+              
             </div>
           </div>
         </div>
@@ -87,6 +92,29 @@
                 </div>
               </div>
             </div>
+            <h5>Equipment and Infrastructure:</h4>
+              <div>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Farm Equipment
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <table id="farmEquipment"></table>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Stand Infrastructure
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <table id="standInfrastructure"></table>
+                  </div>
+                </div>
+              </div>
         </div>        
       </div>       
       <div class="row hg-main-darker">
@@ -95,7 +123,7 @@
           <div id="standWorkersHired"></div>
 
           
-          <div id="farmSecurity"></div>
+          <!-- <div id="farmSecurity"></div> -->
       </div>
       
       <div class="col-6"><h4 class="shadow">Equipment and Infrastructure</h4>

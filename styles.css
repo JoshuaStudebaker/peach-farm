@@ -1,6 +1,7 @@
 :root {
   --hue-main: hsl(120, 85%, 18%);
   --hue-main-darker: hsl(120, 85%, 15%);
+  --hue-main-faded: hsla(120, 85%, 18%, 0.5);
   --hue-sidekick-darker: hsl(36, 100%, 50%);
   --hue-sidekick: orange;
   --hue-snow: hsla(218, 19%, 98%, 1);
@@ -41,6 +42,12 @@ tr {
 }
 .start-buttons {
   background-color: var(--hue-main);
+  border: 2px solid var(--hue-snow);
+  color: var(--hue-snow);
+}
+
+.start-buttons-faded {
+  background-color: var(--hue-main-faded);
   border: 2px solid var(--hue-snow);
   color: var(--hue-snow);
 }
