@@ -329,6 +329,8 @@ function updateScreen() {
   peachesSoldDisplay.innerHTML = "Peaches Sold: " + peachesSold.toString();
   pricePerPoundDisplay.innerHTML =
     "Price per Pound: $" + pricePerPound_Currency.toString();
+  drawFarmEquipmentBought();
+  drawStandInfrastructureBought();
   drawFarmEquipment();
   drawStandInfrastructure();
   drawFarmWorkers();
@@ -337,8 +339,6 @@ function updateScreen() {
   drawRetailBoost();
   drawStandWorkers();
   drawStandWorkersHired();
-  drawFarmEquipmentBought();
-  drawStandInfrastructureBought();
 }
 
 // #region Draw Items:
@@ -465,7 +465,7 @@ function getFarmEquipmentBoughtTemplate(item) {
   ${item.name}:
   </td>
   <td class="pr-1">
-  $${item.cost}/day, 
+  $${item.cost}, 
   </td>
   <td class="text-center pr-1">
   Harvest Boost: +${item.multiplier}
@@ -490,7 +490,7 @@ function getStandInfrastructureBoughtTemplate(item) {
   ${item.name}:
   </td>
   <td class="pr-1">
-  $${item.cost}/day, 
+  $${item.cost}, 
   </td>
   <td class="text-center pr-1">
   Price Boost: +${item.betterPrice}/lb
