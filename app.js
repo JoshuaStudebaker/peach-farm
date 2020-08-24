@@ -336,6 +336,8 @@ function updateScreen() {
   drawRetailBoost();
   drawStandWorkers();
   drawStandWorkersHired();
+  drawFarmEquipmentBought();
+  drawStandInfrastructureBought();
 }
 
 // #region Draw Items:
