@@ -57,6 +57,10 @@ tr {
   border-bottom: 3px solid var(--hue-snow);
 }
 
+.border-sidekick-darker {
+  border: 5px solid var(--hue-sidekick-darker);
+}
+
 .hg-sidekick-darker {
   background-color: var(--hue-sidekick-darker);
 }

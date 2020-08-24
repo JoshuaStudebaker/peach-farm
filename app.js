@@ -75,7 +75,7 @@ function restart() {
       multiplier: 3,
     },
     {
-      name: "Jr (Your Kid)",
+      name: "Jr",
       pricePerDay: 0,
       multiplier: 5,
     },
@@ -125,6 +125,10 @@ let standInfrastructureDisplay = document.getElementById("standInfrastructure");
 let harvestBoostDisplay = document.getElementById("harvest-boost");
 let retailBoostDisplay = document.getElementById("retail-boost");
 let harvestDisplay = document.getElementById("harvest");
+let farmEquipmentBoughtDisplay = document.getElementById("farmEquipmentBought");
+let standInfrastructureBoughtDisplay = document.getElementById(
+  "standInfrastructureBought"
+);
 // #endregion
 
 // #region Items + Workers;
@@ -161,7 +165,7 @@ let farmWorkers = [
     multiplier: 3,
   },
   {
-    name: "Jr (Your Kid)",
+    name: "Jr",
     pricePerDay: 0,
     multiplier: 5,
   },
@@ -269,7 +273,9 @@ function addStandWorker(worker) {
     if (standWorker.name == worker) {
       standMods += standWorker.multiplier;
       cashOut += standWorker.pricePerDay;
-      standWorkers.splice(i, 1);
+      if (standWorker.name != "Retail Seller") {
+        standWorkers.splice(i, 1);
+      }
       standWorkersHired.push(standWorker);
     }
   }
@@ -281,6 +287,7 @@ function addFarmEquipment(implement) {
     if (equipment.name == implement && equipment.cost <= cash) {
       farmMods += equipment.multiplier;
       cash -= equipment.cost;
+      farmEquipmentBought.push(equipment);
       equipment.multiplier = Math.floor(equipment.multiplier * 1.25);
       equipment.cost = Math.floor(equipment.cost * 1.2);
     }
@@ -294,6 +301,7 @@ function addStandInfrastructure(implement) {
     if (purchase.name == implement && purchase.cost <= cash) {
       cash -= purchase.cost;
       pricePerPound += purchase.betterPrice;
+      standInfrastructureBought.push(purchase);
       purchase.betterPrice = Math.floor(purchase.betterPrice * 1.25);
       purchase.cost = Math.floor(purchase.cost * 1.2);
     }
@@ -404,10 +412,10 @@ function getFarmWorkersHiredTemplate(item) {
   ${item.name}:
   </td>
   <td class="pr-1">
-  $${item.pricePerDay}/day
+  $${item.pricePerDay}/day,
   </td>
   <td class="text-center pr-1">
-  ${item.multiplier}
+  Harvest Boost: ${item.multiplier}+
   </td>
   </tr>  
   `;
@@ -429,10 +437,60 @@ function getStandWorkersHiredTemplate(item) {
   ${item.name}:
   </td>
   <td class="pr-1">
-  $${item.pricePerDay}/day
+  $${item.pricePerDay}/day, 
   </td>
   <td class="text-center pr-1">
-  ${item.multiplier}
+  Retail Boost: +${item.multiplier}
+  </td>
+  </tr>  
+  `;
+}
+
+function drawFarmEquipmentBought() {
+  let template = "";
+  farmEquipmentBought.forEach((item) => {
+    template += getFarmEquipmentBoughtTemplate(item);
+  });
+
+  farmEquipmentBoughtDisplay.innerHTML = template;
+}
+
+function getFarmEquipmentBoughtTemplate(item) {
+  return /*html*/ `
+  <tr>
+  <td>
+  ${item.name}:
+  </td>
+  <td class="pr-1">
+  $${item.cost}/day, 
+  </td>
+  <td class="text-center pr-1">
+  Harvest Boost: +${item.multiplier}
+  </td>
+  </tr>  
+  `;
+}
+
+function drawStandInfrastructureBought() {
+  let template = "";
+  standInfrastructureBought.forEach((item) => {
+    template += getStandInfrastructureBoughtTemplate(item);
+  });
+
+  standInfrastructureBoughtDisplay.innerHTML = template;
+}
+
+function getStandInfrastructureBoughtTemplate(item) {
+  return /*html*/ `
+  <tr>
+  <td>
+  ${item.name}:
+  </td>
+  <td class="pr-1">
+  $${item.cost}/day, 
+  </td>
+  <td class="text-center pr-1">
+  Price Boost: +${item.betterPrice}/lb
   </td>
   </tr>  
   `;
@@ -499,6 +557,8 @@ drawFarmWorkers();
 drawStandWorkers();
 drawFarmEquipment();
 drawStandInfrastructure();
+drawFarmEquipment();
+drawStandInfrastructureBought();
 cashInterval();
 // drawFarmSecurity();
 
